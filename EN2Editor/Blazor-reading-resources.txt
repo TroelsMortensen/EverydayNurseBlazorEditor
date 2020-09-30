@@ -1,0 +1,8 @@
+Drag'n'drop:
+https://chrissainty.com/investigating-drag-and-drop-with-blazor/
+
+Events:
+https://docs.microsoft.com/en-us/aspnet/core/blazor/components/event-handling?view=aspnetcore-3.1
+
+Component events:
+https://itnext.io/mvvm-and-blazor-components-and-statehaschanged-a31be365638b

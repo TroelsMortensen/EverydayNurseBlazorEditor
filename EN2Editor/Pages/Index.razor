@@ -1,0 +1,35 @@
+﻿@page "/"
+@using Nodes
+@using EN2Editor.Model
+
+@inject DiagramModelManager diagramModelManager
+
+<div style="display:flex">
+    <div class="sidebar">
+        <ToolsMenu/>
+    </div>
+
+    <div class="diagram-container">
+        <div class="diagram-canvas" @onmousedown="OnMouseDownCanvas">
+            <div class="diagram-html-layer">
+                @foreach (NodeModelBase node in diagramModelManager.Nodes) {
+                    <NodeBase NodeModel="@node" OnDeleteEvent="OnDeleteNode"/>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    protected override async Task OnInitializedAsync() { }
+
+    private void OnMouseDownCanvas(MouseEventArgs e) { }
+
+    private void OnDeleteNode(NodeModelBase node) {
+        diagramModelManager.DeleteNode(node);
+        Console.WriteLine("Deleted");
+        StateHasChanged();
+    }
+
+}
