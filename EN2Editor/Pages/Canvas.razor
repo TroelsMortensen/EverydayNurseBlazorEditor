@@ -3,17 +3,21 @@
 @using Nodes
 @using EN2Editor.Model
 @using EN2Editor.Model.Selection
+@using System.Reflection.Metadata
+@using System.Drawing
 
 @inject SelectionManager selectionManager
 @inject NodeModelManager nodeModelManager
+@inject IJSRuntime jsRuntime
 
 <div class="diagram-container">
-    <div class="diagram-canvas"
+    <div id="CanvasID" class="diagram-canvas"
          @onmousemove="OnMouseMove"
          @onmouseup="OnMouseUp"
          @onmousedown="OnMouseDownCanvas"
          ondragover="event.preventDefault()"
-         @ondrop="OnDrop">
+         @ondrop="OnDrop"
+         @ref=canvasElement>
 
         <div class="diagram-html-layer">
             @foreach (NodeModelBase node in nodeModelManager.Nodes) {
@@ -26,6 +30,7 @@
 
 @code {
     protected override async Task OnInitializedAsync() { }
+    ElementReference canvasElement;
 
     private void OnMouseDownCanvas(MouseEventArgs e) { }
 
@@ -34,12 +39,13 @@
         StateHasChanged();
     }
 
-    private void OnDrop(MouseEventArgs e) {
+    private async Task OnDrop(MouseEventArgs e) {
         if (selectionManager.IsDraggingToolbarNode) {
+            var rectangle = await jsRuntime.InvokeAsync<int[]>("helpers.getBoundingClientRect", "CanvasID");
+
             nodeModelManager.Nodes.Add(new NodeModelBase {
-    // TODO annoying offset hack because screen coords from mouse, but canvas coords on node
-                X = e.ClientX - 320,
-                Y = e.ClientY - 100
+                X = e.ClientX - rectangle[0], // TODO get width for node and -width/2
+                Y = e.ClientY - rectangle[1] 
             });
             selectionManager.IsDraggingToolbarNode = false;
             StateHasChanged();
