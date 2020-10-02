@@ -1,5 +1,62 @@
-<h3>Canvas</h3>
+@using EN2Editor.Model.Selection
+@using EN2Editor.Model
+@using Nodes
+@using EN2Editor.Model
+@using EN2Editor.Model.Selection
+
+@inject SelectionManager selectionManager
+@inject NodeModelManager nodeModelManager
+
+<div class="diagram-container">
+    <div class="diagram-canvas"
+         @onmousemove="OnMouseMove"
+         @onmouseup="OnMouseUp"
+         @onmousedown="OnMouseDownCanvas"
+         ondragover="event.preventDefault()"
+         @ondrop="OnDrop">
+
+        <div class="diagram-html-layer">
+            @foreach (NodeModelBase node in nodeModelManager.Nodes) {
+                <NodeBase NodeModel="@node" OnDeleteEvent="OnDeleteNode"/>
+            }
+        </div>
+
+    </div>
+</div>
 
 @code {
-    
+    protected override async Task OnInitializedAsync() { }
+
+    private void OnMouseDownCanvas(MouseEventArgs e) { }
+
+    private void OnDeleteNode(NodeModelBase node) {
+        nodeModelManager.DeleteNode(node);
+        StateHasChanged();
+    }
+
+    private void OnDrop(MouseEventArgs e) {
+        if (selectionManager.IsDraggingToolbarNode) {
+            nodeModelManager.Nodes.Add(new NodeModelBase {
+    // TODO annoying offset hack because screen coords from mouse, but canvas coords on node
+                X = e.ClientX - 320,
+                Y = e.ClientY - 100
+            });
+            selectionManager.IsDraggingToolbarNode = false;
+            StateHasChanged();
+        }
+    }
+
+    private void OnMouseMove(MouseEventArgs e) {
+        NodeModelBase node = selectionManager.GrabbedNode;
+        if (node == null) return;
+        var deltaX = (e.ClientX - selectionManager.LastX);
+        var deltaY = (e.ClientY - selectionManager.LastY);
+        node.X = deltaX + selectionManager.InitialX;
+        node.Y = deltaY + selectionManager.InitialY;
+    }
+
+    private void OnMouseUp(MouseEventArgs e) {
+        selectionManager.GrabbedNode = null;
+    }
+
 }

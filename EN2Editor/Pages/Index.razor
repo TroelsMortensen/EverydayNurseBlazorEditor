@@ -2,75 +2,15 @@
 @using Nodes
 @using EN2Editor.Model
 @using EN2Editor.Model.Selection
-@using System.Drawing
 
-@inject SelectionManager selectionManager
-@inject NodeModelManager nodeModelManager
-@inject JSRuntime jsRuntime
+
 
 <div style="display:flex">
     <ToolsMenu/>
 
-    <div class="diagram-container">
-        <div class="diagram-canvas"
-             @onmousemove="OnMouseMove"
-             @onmouseup="OnMouseUp"
-             @onmousedown="OnMouseDownCanvas"
-             ondragover="event.preventDefault()"
-             @ondrop="OnDrop">
-            
-            <div class="diagram-html-layer">
-                @foreach (NodeModelBase node in nodeModelManager.Nodes) {
-                    <NodeBase NodeModel="@node" OnDeleteEvent="OnDeleteNode"/>
-                }
-            </div>
-            
-        </div>
-    </div>
+    <Canvas/>
 </div>
 
 @code {
-
-
-    protected override async Task OnInitializedAsync() {
-    }
-
-    private void OnMouseDownCanvas(MouseEventArgs e) { }
-
-    private void OnDeleteNode(NodeModelBase node) {
-        nodeModelManager.DeleteNode(node);
-        Console.WriteLine("Deleted");
-        StateHasChanged();
-    }
-
-    private void OnDrop(MouseEventArgs e) {
-        Console.WriteLine("Created at: " + e.ClientX + " " + e.ClientY);
-        
-        if (selectionManager.IsDraggingToolbarNode) {
-            nodeModelManager.Nodes.Add(new NodeModelBase {
-                // TODO annoying offset hack because screen coords from mouse, but canvas coords on node
-                X = e.ClientX - 320,
-                Y = e.ClientY - 100
-            });
-            selectionManager.IsDraggingToolbarNode = false;
-            StateHasChanged();
-            Console.WriteLine($"And the node {nodeModelManager.Nodes[1].X} {nodeModelManager.Nodes[1].Y}");
-        }
-    }
-
-
-    private void OnMouseMove(MouseEventArgs e) {
-        Console.WriteLine($"Move: {e.ClientX} {e.ClientY}");
-        NodeModelBase node = selectionManager.GrabbedNode;
-        if (node == null) return;
-        var deltaX = (e.ClientX - selectionManager.LastX);
-        var deltaY = (e.ClientY - selectionManager.LastY);
-        node.X = deltaX + selectionManager.InitialX;
-        node.Y = deltaY + selectionManager.InitialY;
-    }
-
-    private void OnMouseUp(MouseEventArgs e) {
-        selectionManager.GrabbedNode = null;
-    }
 
 }
