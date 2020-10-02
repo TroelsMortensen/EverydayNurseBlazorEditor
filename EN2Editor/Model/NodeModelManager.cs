@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 
 namespace EN2Editor.Model {
-public class DiagramModelManager {
+public class NodeModelManager {
     public List<NodeModelBase> Nodes { get;}
 
-    public DiagramModelManager() {
+    public NodeModelManager() {
         Nodes = new List<NodeModelBase>();
         Nodes.Add(new NodeModelBase());
     }

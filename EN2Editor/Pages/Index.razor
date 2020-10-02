@@ -1,21 +1,28 @@
 ﻿@page "/"
 @using Nodes
 @using EN2Editor.Model
+@using EN2Editor.Model.Selection
 
-@inject DiagramModelManager diagramModelManager
+@inject SelectionManager selectionManager
+@inject NodeModelManager nodeModelManager
 
 <div style="display:flex">
-    <div class="sidebar">
-        <ToolsMenu/>
-    </div>
+    <ToolsMenu/>
 
     <div class="diagram-container">
-        <div class="diagram-canvas" @onmousedown="OnMouseDownCanvas">
+        <div class="diagram-canvas"
+             @onmousemove="OnMouseMove"
+             @onmouseup="OnMouseUp"
+             @onmousedown="OnMouseDownCanvas"
+             ondragover="event.preventDefault()"
+             @ondrop="OnDrop">
+            
             <div class="diagram-html-layer">
-                @foreach (NodeModelBase node in diagramModelManager.Nodes) {
+                @foreach (NodeModelBase node in nodeModelManager.Nodes) {
                     <NodeBase NodeModel="@node" OnDeleteEvent="OnDeleteNode"/>
                 }
             </div>
+            
         </div>
     </div>
 </div>
@@ -27,9 +34,36 @@
     private void OnMouseDownCanvas(MouseEventArgs e) { }
 
     private void OnDeleteNode(NodeModelBase node) {
-        diagramModelManager.DeleteNode(node);
+        nodeModelManager.DeleteNode(node);
         Console.WriteLine("Deleted");
         StateHasChanged();
+    }
+
+    private void OnDrop(MouseEventArgs e) {
+        Console.WriteLine("Created at: " + e.ClientX + " " + e.ClientY);
+
+        if (selectionManager.IsDraggingToolbarNode) {
+            nodeModelManager.Nodes.Add(new NodeModelBase {
+                X = e.ClientX,
+                Y = e.ClientY
+            });
+            selectionManager.IsDraggingToolbarNode = false;
+            StateHasChanged();
+        }
+    }
+
+
+    private void OnMouseMove(MouseEventArgs e) {
+        NodeModelBase node = selectionManager.GrabbedNode;
+        if (node == null) return;
+        var deltaX = (e.ClientX - selectionManager.LastX);
+        var deltaY = (e.ClientY - selectionManager.LastY);
+        node.X = deltaX + selectionManager.InitialX;
+        node.Y = deltaY + selectionManager.InitialY;
+    }
+
+    private void OnMouseUp(MouseEventArgs e) {
+        selectionManager.GrabbedNode = null;
     }
 
 }

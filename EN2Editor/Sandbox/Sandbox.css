@@ -253,9 +253,7 @@ NODE
     
 }
 
-.delete {
+.delete-node-button {
     color: red;
     font-size:40px;
-    
-    
 }

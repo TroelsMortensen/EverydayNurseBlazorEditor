@@ -1,11 +1,15 @@
 @using EN2Editor.Model
+@using EN2Editor.Model.Selection
 @namespace Nodes
-@inject DiagramModelManager dmm
+@inject SelectionManager selectionManager
 
-<div class="node" style="left: @(NodeModel.X)px; top: @(NodeModel.Y)px" @onmouseout="OnMouseOut">
-    <div class="default-node"  >
-        <div class="node-component-container"> <!-- This container holds all the components of a specific Node type -->
-            <h4 class="node-header specific-node-header" @onmousedown="OnMouseDown" @onmousemove="OnMouseMove" @onmouseup="OnMouseUp">
+<div class="node" style="left: @(NodeModel.X)px; top: @(NodeModel.Y)px">
+    <div class="default-node">
+        <div class="node-component-container">
+            <!-- This container holds all the components of a specific Node type -->
+            <h4 class="node-header specific-node-header"
+                @onmousedown="OnMouseDown"
+                @onmousedown:stopPropagation="true">
                 Test node
                 <i class="delete-node-button" @onclick="OnDeleteClicked">&#10008;</i>
             </h4>
@@ -14,52 +18,29 @@
             <h6 >other item</h6>
             <h6 >other item</h6>
         </div>
-        <!-- </ul> -->
     </div>
 </div>
 
 @code {
 
-    [Parameter] 
+    [Parameter]
     public EventCallback<NodeModelBase> OnDeleteEvent { get; set; }
-    
+
     [Parameter]
     public string Header { get; set; }
 
     [Parameter]
     public NodeModelBase NodeModel { get; set; }
 
-    // private double x, y;
     private double lastClientX, lastClientY;
-    // private bool isSelected;
     private double initX, initY;
 
-
     private void OnMouseDown(MouseEventArgs e) {
-        lastClientX = e.ClientX;
-        lastClientY = e.ClientY;
-        NodeModel.IsSelected = true;
-    }
-
-    private void OnMouseMove(MouseEventArgs e) {
-        if (!NodeModel.IsSelected) return;
-
-        var deltaX = (e.ClientX - lastClientX);
-        var deltaY = (e.ClientY - lastClientY);
-        NodeModel.X = deltaX + initX;
-        NodeModel.Y = deltaY + initY;
-    }
-
-    private void OnMouseUp(MouseEventArgs e) {
-        NodeModel.IsSelected = false;
-        initX = NodeModel.X;
-        initY = NodeModel.Y;
-    }
-
-    private void OnMouseOut(MouseEventArgs e) {
-        if (!NodeModel.IsSelected) return;
-        Console.WriteLine("Out");
-        OnMouseUp(e);
+        selectionManager.GrabbedNode = NodeModel;
+        selectionManager.InitialX = NodeModel.X;
+        selectionManager.InitialY = NodeModel.Y;
+        selectionManager.LastX = e.ClientX;
+        selectionManager.LastY = e.ClientY;
     }
 
     private void OnDeleteClicked() {

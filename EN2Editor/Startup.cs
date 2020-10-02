@@ -1,4 +1,5 @@
 using EN2Editor.Model;
+using EN2Editor.Model.Selection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,7 +19,8 @@ public class Startup {
     public void ConfigureServices(IServiceCollection services) {
         services.AddRazorPages();
         services.AddServerSideBlazor();
-        services.AddScoped<DiagramModelManager>();
+        services.AddScoped<NodeModelManager>();
+        services.AddScoped<SelectionManager>();
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

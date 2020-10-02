@@ -194,7 +194,6 @@ Canvas
     right: 0px;
     bottom: 0px;
     position: absolute;
-    /*position: relative;*/
     pointer-events: none;
     transform-origin: 0px 0px;
     width: 100%;
@@ -207,12 +206,15 @@ Canvas
 .diagram-canvas {
     width: 100%;
     height: 100%;
-    position: relative;
+    position: relative; /* if absolute, så laver den full screen size canvas, så det går ud over skærmen */
     /*position: absolute;*/
     outline: none;
     overflow: hidden;
     cursor: grab;
     border: 2px solid #000000;
+    background: url('../Icons/Grid.svg');
+    /*background-size: auto;*/
+    background-repeat: repeat;
 }
 
 
@@ -228,30 +230,27 @@ NODE
  */
 
 .node {
-    /*position: relative;*/
     position: absolute;
+    /*position: relative;*/
     user-select: none;
     pointer-events: all;
     display: inline-block;
 }
 
 .default-node {
-    cursor:auto;
+    cursor: auto;
     width: 200px;
     border-radius: 10px;
     background-color: #f5f5f5;
     border: 1px solid #e8e8e8;
-    box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, .12);
+    box-shadow: 5px 6px 5px 1px rgba(0, 0, 0, 0.2), 0px 5px 2px 0px rgba(0, 0, 0, 0.15), 5px 1px 9px 0px rgba(0, 0, 0, .10);
     position: absolute;
-    /*position: relative;*/
-    /*display: flex;*/
-    /*align-items: center;*/
+
     justify-content: center;
-    /*align-items: flex-start*/
 }
 
 .node-header {
-    /*border: 1px solid #000000;*/
+    border-radius: 10px;
     cursor: move;
     text-align: center;
     width: 100%;
@@ -271,11 +270,11 @@ NODE
 }
 
 .delete-node-button {
-    cursor:pointer;
-    float:right; 
-    margin-right:5px;
+    cursor: pointer;
+    float: right;
+    margin-right: 5px;
     color: red;
-    font-size:25px;
+    font-size: 25px;
 }
 
 /*
@@ -283,10 +282,46 @@ NODE
 Tool bar
 #################
  */
-toolbar-item {
-    background: #cfff9a;
+
+.toolbar {
+    width: 250px;
+    /*height: 100vh;*/
+    height: calc(100vh - 80px);
+    position: sticky;
+    top: 0;
+    background-image: linear-gradient(180deg, rgb(0, 0, 0) 0%, #393939 70%);
 }
 
-tool-bar {
-    background: #6c757d;
+.toolbar-header {
+    color: white;
+    text-align: center;
+    margin: 10px;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.toolbar-list {
+    list-style-type: none;
+    padding-left:0;
+}
+
+.toolbar-item {
+    background: #cfff9a;
+    margin: 4px;
+    border-radius: 15px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.toolbar-info {
+    border: 1px solid #e8e8e8;
+}
+
+.info-icon{
+    height: 20px;
+    float: right;
+    margin-top: 2px;
+    margin-right: 2px;
+    cursor: pointer;
 }
