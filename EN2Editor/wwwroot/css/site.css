@@ -311,11 +311,13 @@ Tool bar
     border-radius: 15px;
     text-align: center;
     font-weight: bold;
-    cursor: pointer;
+    cursor: grab;
 }
 
 .toolbar-info {
     border: 1px solid #e8e8e8;
+    cursor: pointer;
+
 }
 
 .info-icon{
