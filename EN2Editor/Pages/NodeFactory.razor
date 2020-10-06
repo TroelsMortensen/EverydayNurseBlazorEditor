@@ -41,6 +41,7 @@
     [Parameter]
     public NodeModelBase NodeModelBase { get; set; }
 
+    // TODO burde kunne bruge CascadingParameter her, i stedet for at forwarde event to gange?
     [Parameter]
     public EventCallback<NodeModelBase> OnDeleteEvent { get; set; }
 

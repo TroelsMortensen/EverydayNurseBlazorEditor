@@ -5,6 +5,7 @@
 @using EN2Editor.Model.Selection
 @using System.Reflection.Metadata
 @using System.Drawing
+@using Rectangle = Models.Rectangle
 
 @inject SelectionManager selectionManager
 @inject NodeModelManager nodeModelManager
@@ -34,6 +35,7 @@
 
     private void OnMouseDownCanvas(MouseEventArgs e) { }
 
+    // This method must be in this component, because it is the canvas, which must re-render itself upon node removal.
     private void OnDeleteNode(NodeModelBase node) {
         nodeModelManager.DeleteNode(node);
         StateHasChanged();
@@ -41,11 +43,12 @@
 
     private async Task OnDrop(MouseEventArgs e) {
         if (selectionManager.IsDraggingToolbarNode) {
-            int[] rectangle = await jsRuntime.InvokeAsync<int[]>("helpers.getBoundingClientRect", "CanvasID");
+            Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
+            //int[] rectangle = await jsRuntime.InvokeAsync<int[]>("helpers.getBoundingClientRect", "CanvasID");
 
             nodeModelManager.Nodes.Add(new NodeModelBase {
-                X = e.ClientX - rectangle[0], // TODO get width for node and -width/2
-                Y = e.ClientY - rectangle[1],
+                X = e.ClientX - (int)rect.Left - 100,//rectangle[0], // TODO get width for node and -width/2
+                Y = e.ClientY - (int)rect.Top - 20,//rectangle[1],
                 NodeType = selectionManager.NodeTypeBeingDragged
             });
             selectionManager.IsDraggingToolbarNode = false;

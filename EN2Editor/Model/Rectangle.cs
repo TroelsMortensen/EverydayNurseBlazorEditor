@@ -1,4 +1,4 @@
-﻿﻿namespace Blazor.Diagrams.Core.Models
+﻿namespace Models
 {
     public class Rectangle
     {
