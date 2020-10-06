@@ -1,0 +1,14 @@
+@using EN2Editor.Model
+
+<li class="toolbar-divider node-type-internal">
+    Interne typer
+</li>
+<li draggable="true" class="toolbar-item node-type-internal" @onmousedown="@(() => DragTool.InvokeAsync(NodeModelBase.NodeTypes.Delay))">
+    Udskyd <img src="Icons/Info.png" class="info-icon"/>
+</li>
+
+@code {
+    
+    [Parameter]
+    public EventCallback<NodeModelBase.NodeTypes> DragTool { get; set; }
+}

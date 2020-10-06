@@ -21,7 +21,7 @@
 
         <div class="diagram-html-layer">
             @foreach (NodeModelBase node in nodeModelManager.Nodes) {
-                <NodeBase NodeModel="@node" OnDeleteEvent="OnDeleteNode"/>
+                <NodeFactory NodeModelBase="@node" OnDeleteEvent="OnDeleteNode"/>
             }
         </div>
 
@@ -41,11 +41,12 @@
 
     private async Task OnDrop(MouseEventArgs e) {
         if (selectionManager.IsDraggingToolbarNode) {
-            var rectangle = await jsRuntime.InvokeAsync<int[]>("helpers.getBoundingClientRect", "CanvasID");
+            int[] rectangle = await jsRuntime.InvokeAsync<int[]>("helpers.getBoundingClientRect", "CanvasID");
 
             nodeModelManager.Nodes.Add(new NodeModelBase {
                 X = e.ClientX - rectangle[0], // TODO get width for node and -width/2
-                Y = e.ClientY - rectangle[1] 
+                Y = e.ClientY - rectangle[1],
+                NodeType = selectionManager.NodeTypeBeingDragged
             });
             selectionManager.IsDraggingToolbarNode = false;
             StateHasChanged();
@@ -55,8 +56,8 @@
     private void OnMouseMove(MouseEventArgs e) {
         NodeModelBase node = selectionManager.GrabbedNode;
         if (node == null) return;
-        var deltaX = (e.ClientX - selectionManager.LastX);
-        var deltaY = (e.ClientY - selectionManager.LastY);
+        double deltaX = (e.ClientX - selectionManager.LastX);
+        double deltaY = (e.ClientY - selectionManager.LastY);
         node.X = deltaX + selectionManager.InitialX;
         node.Y = deltaY + selectionManager.InitialY;
     }

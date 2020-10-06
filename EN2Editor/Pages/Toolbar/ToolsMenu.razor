@@ -1,0 +1,26 @@
+﻿@namespace EN2Editor.Pages.Toolbar
+@using EN2Editor.Model.Selection
+@using EN2Editor.Model
+@inject SelectionManager selectionManager
+
+<div class="toolbar">
+
+    <div class="toolbar-header">Knude typer</div>
+
+    <div>
+        <ul class="flex-column toolbar-list">
+            <StartNodeTools DragTool="DragTool"/>
+            <InternalNodeTools DragTool="DragTool"/>
+            <EndNodeTools DragTool="DragTool"/>
+        </ul>
+    </div>
+</div>
+
+@code {
+
+    private void DragTool(NodeModelBase.NodeTypes nodeType) {
+        selectionManager.IsDraggingToolbarNode = true;
+        selectionManager.NodeTypeBeingDragged = nodeType;
+    }
+
+}

@@ -1,0 +1,47 @@
+@using Nodes
+@using EN2Editor.Model
+@switch (NodeModelBase.NodeType) {
+    // ###########
+    // Start nodes
+    // ###########
+    
+    case NodeModelBase.NodeTypes.InitiallyActive: {
+        <NodeBase Header="Aktiv fra start" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-start">
+            <h6>Template1</h6>
+            <h6>Template2</h6>
+        </NodeBase>
+        break;
+    }
+    // ##############
+    // Internal nodes
+    // ##############
+        
+    case NodeModelBase.NodeTypes.Delay:
+        <NodeBase Header="Udskyd" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
+            <h6>Template3</h6>
+            <h6>Template4</h6>
+        </NodeBase>
+        break;
+        
+    // ##############
+    // End nodes
+    // ##############
+        
+    case NodeModelBase.NodeTypes.DestroyOnCompletion:
+        <NodeBase Header="Slet" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-end">
+            <h6>Template5</h6>
+            <h6>Template6</h6>
+        </NodeBase>
+        break;
+}
+
+
+@code {
+
+    [Parameter]
+    public NodeModelBase NodeModelBase { get; set; }
+
+    [Parameter]
+    public EventCallback<NodeModelBase> OnDeleteEvent { get; set; }
+
+}

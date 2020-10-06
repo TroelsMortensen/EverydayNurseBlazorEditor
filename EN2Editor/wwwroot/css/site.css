@@ -257,10 +257,6 @@ NODE
     height: 40px;
 }
 
-.specific-node-header {
-    background-color: #cfff9a;
-}
-
 .node-component-container {
     vertical-align: top;
     display: flex;
@@ -306,7 +302,6 @@ Tool bar
 }
 
 .toolbar-item {
-    background: #cfff9a;
     margin: 4px;
     border-radius: 15px;
     text-align: center;
@@ -314,9 +309,28 @@ Tool bar
     cursor: grab;
 }
 
+.toolbar-divider{
+    margin: 4px;
+    text-align: center;
+    font-weight: bold;
+    margin-top:20px;
+}
+
+.node-type-start {
+    background: #cfff9a;
+}
+
+.node-type-internal {
+    background: #83fdf4;
+}
+
+.node-type-end {
+    background: #fd8383;
+}
+
 .toolbar-info {
     border: 1px solid #e8e8e8;
-    cursor: pointer;
+    cursor: help;
 
 }
 

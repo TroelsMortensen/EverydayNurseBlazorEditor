@@ -7,5 +7,6 @@ public class SelectionManager {
     public double InitialX, InitialY;
     public double LastX { get; set; }
     public double LastY { get; set; }
+    public NodeModelBase.NodeTypes NodeTypeBeingDragged { get; set; }
 }
 }

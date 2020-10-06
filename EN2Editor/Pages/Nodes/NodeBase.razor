@@ -7,16 +7,13 @@
     <div class="default-node">
         <div class="node-component-container">
             <!-- This container holds all the components of a specific Node type -->
-            <h4 class="node-header specific-node-header"
+            <h4 class="node-header @ColorStyle"
                 @onmousedown="OnMouseDown"
                 @onmousedown:stopPropagation="true">
-                Test node
+                @Header
                 <i class="delete-node-button" @onclick="OnDeleteClicked">&#10008;</i>
             </h4>
-            <h6 >other item</h6>
-            <h6 >other item</h6>
-            <h6 >other item</h6>
-            <h6 >other item</h6>
+            @ChildContent
         </div>
     </div>
 </div>
@@ -32,6 +29,12 @@
     [Parameter]
     public NodeModelBase NodeModel { get; set; }
 
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string ColorStyle { get; set; }
+    
     private double lastClientX, lastClientY;
     private double initX, initY;
 
