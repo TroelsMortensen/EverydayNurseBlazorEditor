@@ -1,7 +1,8 @@
-@using EN2Editor.Model
 @using EN2Editor.Model.Selection
+@using EN2Editor.Model
 @namespace Nodes
 @inject SelectionManager selectionManager
+@inject IJSRuntime jsRuntime
 
 <div class="node" style="left: @(NodeModel.X)px; top: @(NodeModel.Y)px">
     <div class="default-node">
@@ -17,6 +18,7 @@
         </div>
     </div>
 </div>
+
 
 @code {
 
@@ -39,6 +41,7 @@
     private double initX, initY;
 
     private void OnMouseDown(MouseEventArgs e) {
+        
         selectionManager.GrabbedNode = NodeModel;
         selectionManager.InitialX = NodeModel.X;
         selectionManager.InitialY = NodeModel.Y;

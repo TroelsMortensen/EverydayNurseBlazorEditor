@@ -19,21 +19,50 @@
          ondragover="event.preventDefault()"
          @ondrop="OnDrop"
          @ref=canvasElement>
-
+        <svg class="diagram-svg-layer" style="z-index: 1000">
+            @foreach (LinkModel link in nodeModelManager.Links) {
+                @if (link.EndX != null && link.EndY != null) {
+                    <g>
+                        <path d="@GenerateCurvedPath(link)"
+                              stroke-width="10"
+                              fill="none"
+                              stroke="black"
+                              stroke-linecap="round"/>
+                    </g>
+                }
+            }
+        </svg>
         <div class="diagram-html-layer">
             @foreach (NodeModelBase node in nodeModelManager.Nodes) {
                 <NodeFactory NodeModelBase="@node" OnDeleteEvent="OnDeleteNode"/>
             }
+
         </div>
 
     </div>
+
 </div>
 
 @code {
+
+
     protected override async Task OnInitializedAsync() { }
     ElementReference canvasElement;
 
     private void OnMouseDownCanvas(MouseEventArgs e) { }
+
+    private string GenerateCurvedPath(LinkModel link) {
+        Console.WriteLine("here");
+        double? sX = link.StartX - link.CanvasOffSetX;
+        double? sY = link.StartY - link.CanvasOffSetY;
+        double? eX = link.EndX - link.CanvasOffSetX;
+        double? eY = link.EndY - link.CanvasOffSetY;
+        string line = $"M {sX} {sY}" +
+                      $"C {(int)(sX + eX)/2} {sY}," +
+                      $"{(int)(sX + eX)/2} {eY}," +
+                      $"{eX} {eY}";
+        return line;
+    }
 
     // This method must be in this component, because it is the canvas, which must re-render itself upon node removal.
     private void OnDeleteNode(NodeModelBase node) {
@@ -42,14 +71,14 @@
     }
 
     private async Task OnDrop(MouseEventArgs e) {
+        Console.WriteLine("Dropped");
         if (selectionManager.IsDraggingToolbarNode) {
             Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
-            //int[] rectangle = await jsRuntime.InvokeAsync<int[]>("helpers.getBoundingClientRect", "CanvasID");
 
             nodeModelManager.Nodes.Add(new NodeModelBase {
-                X = e.ClientX - (int)rect.Left - 100,//rectangle[0], // TODO get width for node and -width/2
-                Y = e.ClientY - (int)rect.Top - 20,//rectangle[1],
-                NodeType = selectionManager.NodeTypeBeingDragged
+                X = e.ClientX - (int) rect.Left - 100, //rectangle[0], // TODO get width for node and -width/2
+                Y = e.ClientY - (int) rect.Top - 20, //rectangle[1],
+                NodeType = selectionManager.NodeTypeInCreation
             });
             selectionManager.IsDraggingToolbarNode = false;
             StateHasChanged();
@@ -58,15 +87,38 @@
 
     private void OnMouseMove(MouseEventArgs e) {
         NodeModelBase node = selectionManager.GrabbedNode;
-        if (node == null) return;
-        double deltaX = (e.ClientX - selectionManager.LastX);
-        double deltaY = (e.ClientY - selectionManager.LastY);
-        node.X = deltaX + selectionManager.InitialX;
-        node.Y = deltaY + selectionManager.InitialY;
+        LinkModel link = selectionManager.DraggedLink;
+        if (node != null) {
+            double deltaX = (e.ClientX - selectionManager.LastX);
+            double deltaY = (e.ClientY - selectionManager.LastY);
+            node.X = deltaX + selectionManager.InitialX;
+            node.Y = deltaY + selectionManager.InitialY;
+        } else if (link != null) {
+            double deltaX = (e.ClientX - selectionManager.LastX);
+            double deltaY = (e.ClientY - selectionManager.LastY);
+            link.EndX = deltaX + selectionManager.InitialX;
+            link.EndY = deltaY + selectionManager.InitialY;
+
+    // Console.WriteLine("Dragging curve");
+        }
     }
 
+    // private async void DrawLine() {
+    //     await jsRuntime.InvokeVoidAsync("helpers.drawBezier",
+    //         "TransitionCanvas",
+    //         selectionManager.InitialX, // start
+    //         selectionManager.InitialY,
+    //         transitionX, // end
+    //         transitionY
+    //         );
+    // }
+
     private void OnMouseUp(MouseEventArgs e) {
+        if (selectionManager.DraggedLink != null) {
+            nodeModelManager.Links.Remove(selectionManager.DraggedLink);
+        }
         selectionManager.GrabbedNode = null;
+        selectionManager.DraggedLink = null;
     }
 
 }
