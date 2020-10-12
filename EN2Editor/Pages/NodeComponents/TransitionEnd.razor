@@ -1,0 +1,35 @@
+@using EN2Editor.Model.Selection
+@using EN2Editor.Model
+@using Models
+@namespace NodeComponents
+
+@inject SelectionManager selectionManager
+@inject IJSRuntime jsRuntime
+
+<div>
+    <img src="Icons/TransitionPoint.png" height="16px" style="float:left; margin-left: 2px; cursor:pointer"
+         @onmouseup="OnMouseUp"
+         @onmouseup:stopPropagation="true"
+         draggable="false"
+         />
+</div>
+@code {
+
+    [Parameter]
+    public NodeModelBase Node { get; set; }
+    
+    private async Task OnMouseUp(MouseEventArgs evt) {
+        LinkModel linkModel = selectionManager.DraggedLink;
+        selectionManager.DraggedLink = null;
+        if (linkModel == null) return;
+        
+        Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
+        double x = (evt.ClientX - Node.X - rect.Left);
+        double y = (evt.ClientY - Node.Y - rect.Top);
+
+        linkModel.TargetNode = Node;
+        linkModel.OffsetToTargetNodeX = x;
+        linkModel.OffsetToTargetNodeY = y;
+        linkModel.IsEndConnected = true;
+    }
+}

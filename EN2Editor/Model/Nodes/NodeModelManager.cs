@@ -7,7 +7,16 @@ public class NodeModelManager {
 
     public NodeModelManager() {
         Nodes = new List<NodeModelBase>();
-        Nodes.Add(new NodeModelBase());
+        Nodes.Add(new NodeModelBase {
+            X = 10,
+            Y = 10,
+            NodeType = NodeModelBase.NodeTypes.InitiallyActive
+        });
+        Nodes.Add(new NodeModelBase {
+            X = 400,
+            Y = 100,
+            NodeType = NodeModelBase.NodeTypes.Delay
+        });
         Links = new List<LinkModel>();   
     }
 

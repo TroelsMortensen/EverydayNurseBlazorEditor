@@ -1,0 +1,33 @@
+@namespace Nodes
+
+@using EN2Editor.Model
+<g class="link" @onmousedown="PathClicked" >
+    <path d="@GenerateCurvedPath(LinkModel)"
+          stroke-width="10"
+          fill="none"
+          stroke="black"
+          stroke-linecap="round"/>
+</g>
+
+@code {
+
+    [Parameter]
+    public LinkModel LinkModel { get; set; }
+
+    private string GenerateCurvedPath(LinkModel link) {
+        double? sX = link.StartX;
+        double? sY = link.StartY;
+        double? eX = link.EndX;
+        double? eY = link.EndY;
+        string line = $"M {sX} {sY}" +
+                      $"C {(int) (sX + eX) / 2} {sY}," +
+                      $"{(int) (sX + eX) / 2} {eY}," +
+                      $"{eX} {eY}";
+        return line;
+    }
+
+    public void PathClicked() {
+        Console.WriteLine("Path clicked");
+    }
+
+}

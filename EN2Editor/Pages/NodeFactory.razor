@@ -9,7 +9,7 @@
 
     case NodeModelBase.NodeTypes.InitiallyActive: {
         <NodeBase Header="Aktiv fra start" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-start">
-            <TransitionStart/>
+            <TransitionStart Node="NodeModelBase"/>
         </NodeBase>
         break;
     }
@@ -20,8 +20,7 @@
 
     case NodeModelBase.NodeTypes.Delay:
         <NodeBase Header="Udskyd" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
-            <h6>Template3</h6>
-            <h6>Template4</h6>
+            <TransitionEnd Node="NodeModelBase"/>
         </NodeBase>
         break;
 

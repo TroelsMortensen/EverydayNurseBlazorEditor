@@ -7,21 +7,27 @@
 @inject IJSRuntime jsRuntime
 
 <div>
-    <img src="Icons/TransitionPoint.png" height="16px" style="float:right; margin-right: 2px"
+    <img src="Icons/TransitionPoint.png" height="16px" style="float:right; margin-right: 2px; cursor:pointer"
          @onmousedown="OnMouseDown"
          draggable="false"/>
 </div>
 
 @code {
+    
+    [Parameter]
+    public NodeModelBase Node { get; set; }
 
     private async Task OnMouseDown(MouseEventArgs evt) {
-        Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
         
+        Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
+        double x = (evt.ClientX - Node.X - rect.Left);
+        double y = (evt.ClientY - Node.Y - rect.Top);
         LinkModel linkModel = new LinkModel {
-            StartX = evt.ClientX,
-            StartY = evt.ClientY,
-            CanvasOffSetX = (int)rect.Left,
-            CanvasOffSetY = (int)rect.Top
+            OffsetToSourceNodeX = x,
+            OffsetToSourceNodeY = y,
+            OffsetToCanvasX = rect.Left,
+            OffsetToCanvasY = rect.Top,
+            SourceNode = Node
         };
         nodeModelManager.Links.Add(linkModel);
 
@@ -30,7 +36,6 @@
         selectionManager.InitialY = evt.ClientY;
         selectionManager.LastX = evt.ClientX;
         selectionManager.LastY = evt.ClientY;
-        Console.WriteLine("Start transition");
     }
 
 }

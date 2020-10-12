@@ -21,22 +21,13 @@
          @ref=canvasElement>
         <svg class="diagram-svg-layer" style="z-index: 1000">
             @foreach (LinkModel link in nodeModelManager.Links) {
-                @if (link.EndX != null && link.EndY != null) {
-                    <g>
-                        <path d="@GenerateCurvedPath(link)"
-                              stroke-width="10"
-                              fill="none"
-                              stroke="black"
-                              stroke-linecap="round"/>
-                    </g>
-                }
+                <Link LinkModel="link"/>
             }
         </svg>
         <div class="diagram-html-layer">
             @foreach (NodeModelBase node in nodeModelManager.Nodes) {
                 <NodeFactory NodeModelBase="@node" OnDeleteEvent="OnDeleteNode"/>
             }
-
         </div>
 
     </div>
@@ -51,18 +42,6 @@
 
     private void OnMouseDownCanvas(MouseEventArgs e) { }
 
-    private string GenerateCurvedPath(LinkModel link) {
-        Console.WriteLine("here");
-        double? sX = link.StartX - link.CanvasOffSetX;
-        double? sY = link.StartY - link.CanvasOffSetY;
-        double? eX = link.EndX - link.CanvasOffSetX;
-        double? eY = link.EndY - link.CanvasOffSetY;
-        string line = $"M {sX} {sY}" +
-                      $"C {(int)(sX + eX)/2} {sY}," +
-                      $"{(int)(sX + eX)/2} {eY}," +
-                      $"{eX} {eY}";
-        return line;
-    }
 
     // This method must be in this component, because it is the canvas, which must re-render itself upon node removal.
     private void OnDeleteNode(NodeModelBase node) {
@@ -96,8 +75,8 @@
         } else if (link != null) {
             double deltaX = (e.ClientX - selectionManager.LastX);
             double deltaY = (e.ClientY - selectionManager.LastY);
-            link.EndX = deltaX + selectionManager.InitialX;
-            link.EndY = deltaY + selectionManager.InitialY;
+            link.EndX = (int) (deltaX + selectionManager.InitialX);
+            link.EndY = (int) (deltaY + selectionManager.InitialY);
 
     // Console.WriteLine("Dragging curve");
         }
