@@ -1,3 +1,5 @@
+using Models.Components;
+
 namespace EN2Editor.Model {
 public class LinkModel {
     private int endX;
@@ -5,13 +7,15 @@ public class LinkModel {
 
     public bool IsEndConnected { get; set; }
 
-    public NodeModelBase SourceNode { get; set; }
-    public double OffsetToSourceNodeX { private get; set; }
-    public double OffsetToSourceNodeY { private get; set; }
+    // public NodeModelBase SourceNode { get; set; }
+    public TransitionStartModel TransitionStartModel { get; set; }
+    // public double OffsetToStartX { private get; set; }
+    // public double OffsetToStartY { private get; set; }
 
-    public NodeModelBase TargetNode { get; set; }
-    public double OffsetToTargetNodeX { private get; set; }
-    public double OffsetToTargetNodeY { private get; set; }
+    // public NodeModelBase TargetNode { get; set; }
+    public TransitionEndModel TransitionEndModel { get; set; }
+    public double OffsetToEndX { private get; set; }
+    public double OffsetToEndY { private get; set; }
 
     public double OffsetToCanvasX { get; set; }
     public double OffsetToCanvasY { get; set; }
@@ -19,8 +23,8 @@ public class LinkModel {
     public int EndX {
         get =>
             IsEndConnected ?
-                (int) (TargetNode.X + OffsetToTargetNodeX) :
-                (int) (endX - OffsetToCanvasX);
+                (int) (TransitionEndModel.OffsetToNodeX + OffsetToEndX) :
+                (int) (endX - OffsetToCanvasX - 20);
 
         // if (!IsEndConnected)
         //     return (int) (endX - OffsetToCanvasX);
@@ -32,18 +36,19 @@ public class LinkModel {
     public int EndY {
         get =>
             IsEndConnected ?
-                (int) (TargetNode.Y + OffsetToTargetNodeY) :
+                (int) (TransitionEndModel.OffsetToNodeY + OffsetToEndY) :
                 (int) (endY - OffsetToCanvasY);
 
         // if (!IsEndConnected)
         //     return (int) (endY - OffsetToCanvasY);
         // else return (int) (TargetNode.Y + OffsetToTargetNodeY);
-       
+
         set => endY = value;
     }
 
-    public int StartX => (int) (SourceNode.X + OffsetToSourceNodeX);
+    public int StartX => (int) (TransitionStartModel.OffsetToNodeX + (int)TransitionStartModel.Node.X);
 
-    public int StartY => (int) (SourceNode.Y + OffsetToSourceNodeY);
+    public int StartY => (int) (TransitionStartModel.OffsetToNodeY + (int)TransitionStartModel.Node.Y);
+    public bool IsSelected { get; set; }
 }
 }

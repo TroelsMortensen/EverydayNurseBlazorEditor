@@ -7,17 +7,24 @@ public class NodeModelManager {
 
     public NodeModelManager() {
         Nodes = new List<NodeModelBase>();
-        Nodes.Add(new NodeModelBase {
+        Links = new List<LinkModel>();
+        
+        /*NodeModelBase startNode = new NodeModelBase {
             X = 10,
             Y = 10,
             NodeType = NodeModelBase.NodeTypes.InitiallyActive
-        });
-        Nodes.Add(new NodeModelBase {
+        };
+        Nodes.Add(startNode);
+        NodeModelBase endNode = new NodeModelBase {
             X = 400,
             Y = 100,
             NodeType = NodeModelBase.NodeTypes.Delay
-        });
-        Links = new List<LinkModel>();   
+        };
+        Nodes.Add(endNode);*/
+        // Links.Add(new LinkModel {
+        //     SourceNode = startNode,
+        //     TargetNode = endNode
+        // });
     }
 
     public void DeleteNode(NodeModelBase node) {

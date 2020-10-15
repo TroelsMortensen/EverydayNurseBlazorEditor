@@ -1,35 +1,44 @@
+@namespace EN2Editor.Pages.NodeComponents
+
 @using EN2Editor.Model.Selection
-@using EN2Editor.Model
 @using Models
-@namespace NodeComponents
+@using Models.Components
+@using EN2Editor.Model
 
 @inject SelectionManager selectionManager
 @inject IJSRuntime jsRuntime
+@inject DiagramManager diagramManager
 
 <div>
-    <img src="Icons/TransitionPoint.png" height="16px" style="float:left; margin-left: 2px; cursor:pointer"
+    <img src="Icons/TransitionPoint.png" height="16px" style="float:left; margin-left: 2px; cursor:pointer; pointer-events:auto"
          @onmouseup="OnMouseUp"
-         @onmouseup:stopPropagation="true"
-         draggable="false"
-         />
+         draggable="false"/>
 </div>
+
 @code {
 
+   /* [Parameter]
+    public NodeModelBase Node { get; set; }*/
+
     [Parameter]
-    public NodeModelBase Node { get; set; }
+    public TransitionEndModel tem { get; set; }
     
     private async Task OnMouseUp(MouseEventArgs evt) {
+        Console.WriteLine("End up");
         LinkModel linkModel = selectionManager.DraggedLink;
         selectionManager.DraggedLink = null;
         if (linkModel == null) return;
-        
-        Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
-        double x = (evt.ClientX - Node.X - rect.Left);
-        double y = (evt.ClientY - Node.Y - rect.Top);
 
-        linkModel.TargetNode = Node;
-        linkModel.OffsetToTargetNodeX = x;
-        linkModel.OffsetToTargetNodeY = y;
+        Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
+        double x = (evt.ClientX - tem.OffsetToNodeX - rect.Left - diagramManager.PanX);
+        double y = (evt.ClientY - tem.OffsetToNodeY - rect.Top - diagramManager.PanY);
+
+        linkModel.TransitionEndModel = tem;
+        linkModel.OffsetToEndX = x;
+        linkModel.OffsetToEndY = y;
         linkModel.IsEndConnected = true;
+        /*linkModel.SourceNode.OutgoingLinks.Add(linkModel);
+        linkModel.TargetNode.IncomingLinks.Add(linkModel);*/
     }
+
 }

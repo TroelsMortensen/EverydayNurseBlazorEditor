@@ -1,4 +1,4 @@
-@using Nodes
+@using EN2Editor.Pages.Nodes
 @using EN2Editor.Model
 @using NodeComponents
 
@@ -7,9 +7,9 @@
     // Start nodes
     // ###########
 
-    case NodeModelBase.NodeTypes.InitiallyActive: {
+    case NodeModelBase.NodeTypes.AktivFraStarten: {
         <NodeBase Header="Aktiv fra start" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-start">
-            <TransitionStart Node="NodeModelBase"/>
+            <AktivFraStartenNode NodeModelBase="(AktivFraStartenNodeModel) NodeModelBase"/>
         </NodeBase>
         break;
     }
@@ -18,9 +18,10 @@
     // Internal nodes
     // ##############
 
-    case NodeModelBase.NodeTypes.Delay:
+    case NodeModelBase.NodeTypes.Udsaet:
         <NodeBase Header="Udskyd" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
-            <TransitionEnd Node="NodeModelBase"/>
+           <!-- <TransitionEnd Node="NodeModelBase"/>
+            <TransitionStart Node="NodeModelBase"/>-->
         </NodeBase>
         break;
 
@@ -28,10 +29,9 @@
     // End nodes
     // ##############
 
-    case NodeModelBase.NodeTypes.DestroyOnCompletion:
+    case NodeModelBase.NodeTypes.SletVedAfslutning:
         <NodeBase Header="Slet" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-end">
-            <h6>Template5</h6>
-            <h6>Template6</h6>
+            <!--<TransitionEnd Node="NodeModelBase"/>-->
         </NodeBase>
         break;
 }

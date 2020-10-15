@@ -1,31 +1,31 @@
 @using EN2Editor.Model.Selection
 @using EN2Editor.Model
-@using Nodes
-@using EN2Editor.Model
-@using EN2Editor.Model.Selection
-@using System.Reflection.Metadata
-@using System.Drawing
-@using Rectangle = Models.Rectangle
+@using EN2Editor.Pages.Nodes
+@using Models
 
-@inject SelectionManager selectionManager
-@inject NodeModelManager nodeModelManager
-@inject IJSRuntime jsRuntime
+@inject SelectionManager SelectionManager
+@inject NodeModelManager NodeModelManager
+@inject IJSRuntime JsRuntime
+@inject DiagramManager DiagramManager
 
 <div class="diagram-container">
     <div id="CanvasID" class="diagram-canvas"
+         tabindex="-1"
          @onmousemove="OnMouseMove"
          @onmouseup="OnMouseUp"
          @onmousedown="OnMouseDownCanvas"
          ondragover="event.preventDefault()"
          @ondrop="OnDrop"
-         @ref=canvasElement>
-        <svg class="diagram-svg-layer" style="z-index: 1000">
-            @foreach (LinkModel link in nodeModelManager.Links) {
-                <Link LinkModel="link"/>
+         @onkeydown="OnKeyDown">
+        <svg class="diagram-svg-layer" style="z-index: 1000; 
+        transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
+            @foreach (LinkModel link in NodeModelManager.Links) {
+                <Link LinkModel="@link"/>
             }
         </svg>
-        <div class="diagram-html-layer">
-            @foreach (NodeModelBase node in nodeModelManager.Nodes) {
+        <div class="diagram-html-layer"
+             style="transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
+            @foreach (NodeModelBase node in NodeModelManager.Nodes) {
                 <NodeFactory NodeModelBase="@node" OnDeleteEvent="OnDeleteNode"/>
             }
         </div>
@@ -35,69 +35,89 @@
 </div>
 
 @code {
+    public string PanX => DiagramManager.PanX.ToString();
+    public string PanY => DiagramManager.PanY.ToString();
+    public string Zoom => "1";
 
+    private bool isDragging;
+    private double dragStartX;
+    private double dragStartY;
 
     protected override async Task OnInitializedAsync() { }
-    ElementReference canvasElement;
 
-    private void OnMouseDownCanvas(MouseEventArgs e) { }
-
+    private void OnMouseDownCanvas(MouseEventArgs e) {
+        isDragging = true;
+        dragStartX = e.ClientX - DiagramManager.PanX;
+        dragStartY = e.ClientY - DiagramManager.PanY;
+        if (SelectionManager.SelectedLink != null) {
+            SelectionManager.SelectedLink.IsSelected = false;
+        }
+        SelectionManager.SelectedLink = null;
+    }
 
     // This method must be in this component, because it is the canvas, which must re-render itself upon node removal.
     private void OnDeleteNode(NodeModelBase node) {
-        nodeModelManager.DeleteNode(node);
+        NodeModelManager.DeleteNode(node);
         StateHasChanged();
     }
 
     private async Task OnDrop(MouseEventArgs e) {
         Console.WriteLine("Dropped");
-        if (selectionManager.IsDraggingToolbarNode) {
-            Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
+        if (SelectionManager.IsDraggingToolbarNode) {
+            Console.WriteLine($"Creating {SelectionManager.NodeTypeInCreation}");
+            Rectangle rect = await JsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
 
-            nodeModelManager.Nodes.Add(new NodeModelBase {
-                X = e.ClientX - (int) rect.Left - 100, //rectangle[0], // TODO get width for node and -width/2
-                Y = e.ClientY - (int) rect.Top - 20, //rectangle[1],
-                NodeType = selectionManager.NodeTypeInCreation
-            });
-            selectionManager.IsDraggingToolbarNode = false;
+            
+            double x = e.ClientX - (int) rect.Left - 100 - DiagramManager.PanX;
+            double y = e.ClientY - (int) rect.Top - 20 - DiagramManager.PanY;
+            NodeModelBase newNode = NodeModelFactory.CreateNode(SelectionManager.NodeTypeInCreation, x, y);
+            NodeModelManager.Nodes.Add(newNode);
+            SelectionManager.IsDraggingToolbarNode = false;
             StateHasChanged();
         }
     }
 
     private void OnMouseMove(MouseEventArgs e) {
-        NodeModelBase node = selectionManager.GrabbedNode;
-        LinkModel link = selectionManager.DraggedLink;
-        if (node != null) {
-            double deltaX = (e.ClientX - selectionManager.LastX);
-            double deltaY = (e.ClientY - selectionManager.LastY);
-            node.X = deltaX + selectionManager.InitialX;
-            node.Y = deltaY + selectionManager.InitialY;
-        } else if (link != null) {
-            double deltaX = (e.ClientX - selectionManager.LastX);
-            double deltaY = (e.ClientY - selectionManager.LastY);
-            link.EndX = (int) (deltaX + selectionManager.InitialX);
-            link.EndY = (int) (deltaY + selectionManager.InitialY);
-
-    // Console.WriteLine("Dragging curve");
+        NodeModelBase node = SelectionManager.GrabbedNode;
+        LinkModel link = SelectionManager.DraggedLink;
+        if (node != null) { // dragging node
+            double deltaX = (e.ClientX - SelectionManager.LastX);
+            double deltaY = (e.ClientY - SelectionManager.LastY);
+            node.X = deltaX + SelectionManager.InitialX;
+            node.Y = deltaY + SelectionManager.InitialY;
+        } else if (link != null) { // dragging link
+            double deltaX = (e.ClientX - SelectionManager.LastX);
+            double deltaY = (e.ClientY - SelectionManager.LastY);
+            link.EndX = (int) (deltaX + SelectionManager.InitialX - DiagramManager.PanX);
+            link.EndY = (int) (deltaY + SelectionManager.InitialY - DiagramManager.PanY);
+        } else if (isDragging) { // dragging canvas
+            double deltaX = (e.ClientX - dragStartX);
+            double deltaY = (e.ClientY - dragStartY);
+            DiagramManager.PanX = (int) deltaX;
+            DiagramManager.PanY = (int) deltaY;
         }
     }
 
-    // private async void DrawLine() {
-    //     await jsRuntime.InvokeVoidAsync("helpers.drawBezier",
-    //         "TransitionCanvas",
-    //         selectionManager.InitialX, // start
-    //         selectionManager.InitialY,
-    //         transitionX, // end
-    //         transitionY
-    //         );
-    // }
-
     private void OnMouseUp(MouseEventArgs e) {
-        if (selectionManager.DraggedLink != null) {
-            nodeModelManager.Links.Remove(selectionManager.DraggedLink);
+        Console.WriteLine("Canvas up");
+        if (SelectionManager.DraggedLink != null) {
+            NodeModelManager.Links.Remove(SelectionManager.DraggedLink);
         }
-        selectionManager.GrabbedNode = null;
-        selectionManager.DraggedLink = null;
+        SelectionManager.GrabbedNode = null;
+        SelectionManager.DraggedLink = null;
+        isDragging = false;
+    }
+
+    private void OnKeyDown(KeyboardEventArgs arg) {
+        if (arg.Code == "Delete") {
+            LinkModel link = SelectionManager.SelectedLink;
+            if (link != null) {
+                NodeModelManager.Links.Remove(link);
+                NodeModelManager.Nodes.ForEach(n => {
+                    n.OnDeleteNode();
+                });
+            }
+        }
     }
 
 }

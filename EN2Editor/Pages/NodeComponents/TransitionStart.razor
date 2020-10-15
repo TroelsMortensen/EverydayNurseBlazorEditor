@@ -1,36 +1,45 @@
+@namespace EN2Editor.Pages.NodeComponents
+
 @using EN2Editor.Model.Selection
 @using Models
 @using EN2Editor.Model
-@namespace NodeComponents
+@using Models.Components
+
 @inject SelectionManager selectionManager
 @inject NodeModelManager nodeModelManager
 @inject IJSRuntime jsRuntime
+@inject DiagramManager diagramManager
 
 <div>
-    <img src="Icons/TransitionPoint.png" height="16px" style="float:right; margin-right: 2px; cursor:pointer"
+    <img id="@tsm.ID" src="Icons/TransitionPoint.png" height="16px" style="float:right; margin-right: 2px; cursor:pointer"
          @onmousedown="OnMouseDown"
+         @onmousedown:stopPropagation="true"
          draggable="false"/>
 </div>
 
 @code {
-    
+
     [Parameter]
-    public NodeModelBase Node { get; set; }
+    public TransitionStartModel tsm { get; set; }
 
     private async Task OnMouseDown(MouseEventArgs evt) {
-        
-        Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
-        double x = (evt.ClientX - Node.X - rect.Left);
-        double y = (evt.ClientY - Node.Y - rect.Top);
-        LinkModel linkModel = new LinkModel {
-            OffsetToSourceNodeX = x,
-            OffsetToSourceNodeY = y,
-            OffsetToCanvasX = rect.Left,
-            OffsetToCanvasY = rect.Top,
-            SourceNode = Node
-        };
-        nodeModelManager.Links.Add(linkModel);
+        Rectangle imgRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", tsm.ID);
+        Rectangle canvasRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
 
+
+        // represents the vector from Node coords to port coords
+        // hardcoding 6 for image size, to put transition line in the middle
+        tsm.OffsetToNodeX = (int) (imgRect.Left - canvasRect.Left) - tsm.Node.X + 6 - diagramManager.PanX;  
+        tsm.OffsetToNodeY = (int) (imgRect.Top - canvasRect.Top) - tsm.Node.Y + 7 - diagramManager.PanY;
+
+        LinkModel linkModel = new LinkModel {
+            OffsetToCanvasX = canvasRect.Left,
+            OffsetToCanvasY = canvasRect.Top,
+            TransitionStartModel = tsm
+        };
+
+        nodeModelManager.Links.Add(linkModel);
+        
         selectionManager.DraggedLink = linkModel;
         selectionManager.InitialX = evt.ClientX;
         selectionManager.InitialY = evt.ClientY;

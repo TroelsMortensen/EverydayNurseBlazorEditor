@@ -11,5 +11,6 @@ public class SelectionManager {
     public double LastX { get; set; }
     public double LastY { get; set; }
     public NodeModelBase.NodeTypes NodeTypeInCreation { get; set; }
+    public LinkModel SelectedLink { get; set; }
 }
 }

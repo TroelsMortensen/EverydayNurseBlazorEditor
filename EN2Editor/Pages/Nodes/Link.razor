@@ -1,11 +1,14 @@
-@namespace Nodes
+@namespace EN2Editor.Pages.Nodes
 
 @using EN2Editor.Model
-<g class="link" @onmousedown="PathClicked" >
+@using EN2Editor.Model.Selection
+@inject SelectionManager SelectionManager
+
+<g class="link" @onclick="PathClicked" @onclick:stopPropagation="true">
     <path d="@GenerateCurvedPath(LinkModel)"
           stroke-width="10"
           fill="none"
-          stroke="black"
+          stroke="@(LinkModel.IsSelected ? "blue" :"black")"
           stroke-linecap="round"/>
 </g>
 
@@ -13,7 +16,7 @@
 
     [Parameter]
     public LinkModel LinkModel { get; set; }
-
+    
     private string GenerateCurvedPath(LinkModel link) {
         double? sX = link.StartX;
         double? sY = link.StartY;
@@ -27,7 +30,8 @@
     }
 
     public void PathClicked() {
-        Console.WriteLine("Path clicked");
+        LinkModel.IsSelected = !LinkModel.IsSelected;
+        SelectionManager.SelectedLink = LinkModel.IsSelected ? LinkModel : null;
     }
 
 }
