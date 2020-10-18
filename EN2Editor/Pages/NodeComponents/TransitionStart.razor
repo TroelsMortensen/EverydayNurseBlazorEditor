@@ -23,6 +23,7 @@
     public TransitionStartModel tsm { get; set; }
 
     private async Task OnMouseDown(MouseEventArgs evt) {
+
         Rectangle imgRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", tsm.ID);
         Rectangle canvasRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
 

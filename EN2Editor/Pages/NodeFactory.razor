@@ -20,7 +20,8 @@
 
     case NodeModelBase.NodeTypes.Udsaet:
         <NodeBase Header="Udskyd" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
-           <!-- <TransitionEnd Node="NodeModelBase"/>
+            <UdsaetNode NodeModelBase="(UdsaetNodeModel)NodeModelBase"/>
+            <!-- <TransitionEnd Node="NodeModelBase"/>
             <TransitionStart Node="NodeModelBase"/>-->
         </NodeBase>
         break;

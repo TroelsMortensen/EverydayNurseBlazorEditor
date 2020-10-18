@@ -1,7 +1,14 @@
 @namespace EN2Editor.Pages.Nodes
 
-<h3>UdsaetNode</h3>
+@using EN2Editor.Pages.NodeComponents
+@using EN2Editor.Model
+
+<TransitionEnd tem="NodeModelBase.TransitionEndModel"/>
+<TransitionStart tsm="NodeModelBase.TransitionStartModel"/>
 
 @code {
-    
+
+    [Parameter]
+    public UdsaetNodeModel NodeModelBase { get; set; }
+
 }

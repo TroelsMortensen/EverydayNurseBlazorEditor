@@ -17,6 +17,11 @@
          ondragover="event.preventDefault()"
          @ondrop="OnDrop"
          @onkeydown="OnKeyDown">
+        
+        @if (@DiagramManager.PanX != 0 || @DiagramManager.PanY != 0) {
+            <div class="unselectable"><button @onclick="ResetPan" style="background:black; color:white">Nulstil</button>Pan, x: @DiagramManager.PanX y: @DiagramManager.PanY</div>
+        }
+        
         <svg class="diagram-svg-layer" style="z-index: 1000; 
         transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
             @foreach (LinkModel link in NodeModelManager.Links) {
@@ -72,6 +77,7 @@
             double y = e.ClientY - (int) rect.Top - 20 - DiagramManager.PanY;
             NodeModelBase newNode = NodeModelFactory.CreateNode(SelectionManager.NodeTypeInCreation, x, y);
             NodeModelManager.Nodes.Add(newNode);
+            Console.WriteLine($"Created node {newNode.NodeType}, id: {newNode.ID}");
             SelectionManager.IsDraggingToolbarNode = false;
             StateHasChanged();
         }
@@ -118,6 +124,11 @@
                 });
             }
         }
+    }
+
+    private void ResetPan() {
+        DiagramManager.PanY = 0;
+        DiagramManager.PanX = 0;
     }
 
 }

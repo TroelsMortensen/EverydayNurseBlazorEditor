@@ -16,7 +16,7 @@ public abstract class NodeModelBase {
 
     public abstract string Description { get;  }
     
-    public Guid ID { get; } = new Guid();
+    public Guid ID { get; } = Guid.NewGuid();
     
     public NodeTypes NodeType;
     

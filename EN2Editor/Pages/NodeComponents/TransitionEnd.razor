@@ -10,35 +10,33 @@
 @inject DiagramManager diagramManager
 
 <div>
-    <img src="Icons/TransitionPoint.png" height="16px" style="float:left; margin-left: 2px; cursor:pointer; pointer-events:auto"
+    <img id="@tem.ID" src="Icons/TransitionPoint.png" height="16px" style="float:left; margin-left: 2px; cursor:pointer; pointer-events:auto"
          @onmouseup="OnMouseUp"
+         @onmouseup:stopPropagation="true"
          draggable="false"/>
 </div>
 
 @code {
 
-   /* [Parameter]
-    public NodeModelBase Node { get; set; }*/
-
     [Parameter]
     public TransitionEndModel tem { get; set; }
-    
+
     private async Task OnMouseUp(MouseEventArgs evt) {
-        Console.WriteLine("End up");
         LinkModel linkModel = selectionManager.DraggedLink;
         selectionManager.DraggedLink = null;
+
         if (linkModel == null) return;
 
-        Rectangle rect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
-        double x = (evt.ClientX - tem.OffsetToNodeX - rect.Left - diagramManager.PanX);
-        double y = (evt.ClientY - tem.OffsetToNodeY - rect.Top - diagramManager.PanY);
+        Rectangle imgRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", tem.ID);
+        Rectangle canvasRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
+
+        tem.OffsetToNodeX = (int) (imgRect.Left - canvasRect.Left) - tem.Node.X + 6 - diagramManager.PanX;
+        tem.OffsetToNodeY = (int) (imgRect.Top - canvasRect.Top) - tem.Node.Y + 7 - diagramManager.PanY;
 
         linkModel.TransitionEndModel = tem;
-        linkModel.OffsetToEndX = x;
-        linkModel.OffsetToEndY = y;
+
         linkModel.IsEndConnected = true;
-        /*linkModel.SourceNode.OutgoingLinks.Add(linkModel);
-        linkModel.TargetNode.IncomingLinks.Add(linkModel);*/
+
     }
 
 }
