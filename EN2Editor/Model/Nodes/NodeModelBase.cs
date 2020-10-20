@@ -15,6 +15,7 @@ public abstract class NodeModelBase {
     }
 
     public abstract string Description { get;  }
+    public abstract string Instruction { get;  }
     
     public Guid ID { get; } = Guid.NewGuid();
     

@@ -23,15 +23,7 @@
     public TransitionStartModel tsm { get; set; }
 
     private async Task OnMouseDown(MouseEventArgs evt) {
-
-        Rectangle imgRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", tsm.ID);
-        Rectangle canvasRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
-
-
-        // represents the vector from Node coords to port coords
-        // hardcoding 6 for image size, to put transition line in the middle
-        tsm.OffsetToNodeX = (int) (imgRect.Left - canvasRect.Left) - tsm.Node.X + 6 - diagramManager.PanX;  
-        tsm.OffsetToNodeY = (int) (imgRect.Top - canvasRect.Top) - tsm.Node.Y + 7 - diagramManager.PanY;
+        Rectangle canvasRect = await CalcCoords();
 
         LinkModel linkModel = new LinkModel {
             OffsetToCanvasX = canvasRect.Left,
@@ -40,12 +32,30 @@
         };
 
         nodeModelManager.Links.Add(linkModel);
-        
+
         selectionManager.DraggedLink = linkModel;
         selectionManager.InitialX = evt.ClientX;
         selectionManager.InitialY = evt.ClientY;
         selectionManager.LastX = evt.ClientX;
         selectionManager.LastY = evt.ClientY;
     }
+
+    protected override Task OnInitializedAsync() {
+        Console.WriteLine("here1");
+        return base.OnInitializedAsync();
+    }
+
+    public async Task<Rectangle> CalcCoords() {
+        Rectangle imgRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", tsm.ID);
+        Rectangle canvasRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
+
+
+    // represents the vector from Node coords to port coords
+    // hardcoding 6 for image size, to put transition line in the middle
+        tsm.OffsetToNodeX = (int) (imgRect.Left - canvasRect.Left) - tsm.Node.X + 6 - diagramManager.PanX;
+        tsm.OffsetToNodeY = (int) (imgRect.Top - canvasRect.Top) - tsm.Node.Y + 7 - diagramManager.PanY;
+        return canvasRect;
+    }
+
 
 }

@@ -282,6 +282,39 @@ NODE
     font-size: 25px;
 }
 
+.node-tooltiptext {
+    visibility: hidden;
+    background-color: #b7b7b7;
+    color: #000000;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px 0;
+    border: 3px solid #000000;
+    box-shadow: 5px 6px 5px 1px rgba(0, 0, 0, 0.2), 0px 5px 2px 0px rgba(0, 0, 0, 0.15), 5px 1px 9px 0px rgba(0, 0, 0, .10);
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1000;
+}
+
+.nodetooltip {
+    display: inline-block;
+    float:left;
+}
+
+.nodetooltip:hover .node-tooltiptext {
+    visibility: visible;
+}
+
+.header-info-icon {
+    border: 2px solid #000000;
+    border-radius: 10px;
+    height: 20px;
+    float: left;
+    margin-top: 2px;
+    margin-right: 2px;
+    cursor: help;
+}
+
 /*
 #################
 Tool bar
@@ -346,6 +379,8 @@ Tool bar
     margin-right: 2px;
     cursor: help;
 }
+
+
 
 /*
 #################

@@ -18,18 +18,17 @@
          @ondrop="OnDrop"
          @onkeydown="OnKeyDown">
         
-        @if (@DiagramManager.PanX != 0 || @DiagramManager.PanY != 0) {
+        @if (DiagramManager.PanX != 0 || DiagramManager.PanY != 0) {
             <div class="unselectable"><button @onclick="ResetPan" style="background:black; color:white">Nulstil</button>Pan, x: @DiagramManager.PanX y: @DiagramManager.PanY</div>
         }
         
-        <svg class="diagram-svg-layer" style="z-index: 1000; 
+        <svg class="diagram-svg-layer" style="z-index: 10; 
         transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
             @foreach (LinkModel link in NodeModelManager.Links) {
                 <Link LinkModel="@link"/>
             }
         </svg>
-        <div class="diagram-html-layer"
-             style="transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
+        <div class="diagram-html-layer" style="transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
             @foreach (NodeModelBase node in NodeModelManager.Nodes) {
                 <NodeFactory NodeModelBase="@node" OnDeleteEvent="OnDeleteNode"/>
             }
@@ -105,7 +104,6 @@
     }
 
     private void OnMouseUp(MouseEventArgs e) {
-        Console.WriteLine("Canvas up");
         if (SelectionManager.DraggedLink != null) {
             NodeModelManager.Links.Remove(SelectionManager.DraggedLink);
         }

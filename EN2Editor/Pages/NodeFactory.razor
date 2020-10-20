@@ -20,9 +20,7 @@
 
     case NodeModelBase.NodeTypes.Udsaet:
         <NodeBase Header="Udskyd" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
-            <UdsaetNode NodeModelBase="(UdsaetNodeModel)NodeModelBase"/>
-            <!-- <TransitionEnd Node="NodeModelBase"/>
-            <TransitionStart Node="NodeModelBase"/>-->
+            <UdsaetNode NodeModel="(UdsaetNodeModel)NodeModelBase"/>
         </NodeBase>
         break;
 
@@ -32,7 +30,7 @@
 
     case NodeModelBase.NodeTypes.SletVedAfslutning:
         <NodeBase Header="Slet" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-end">
-            <!--<TransitionEnd Node="NodeModelBase"/>-->
+            <SletVedAfslutningNode NodeModelBase="(SletVedAfslutningNodeModel)NodeModelBase"/>
         </NodeBase>
         break;
 }

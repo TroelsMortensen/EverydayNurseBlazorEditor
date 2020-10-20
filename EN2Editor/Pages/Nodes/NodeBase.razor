@@ -6,13 +6,19 @@
 @inject SelectionManager selectionManager
 @inject IJSRuntime jsRuntime
 
-<div class="node" style="left: @(NodeModel.X)px; top: @(NodeModel.Y)px">
+<div class="node" style="left: @(NodeModel.X)px; top: @(NodeModel.Y)px" xmlns="http://www.w3.org/1999/html">
     <div class="default-node">
         <div class="node-component-container">
             <!-- This container holds all the components of a specific Node type -->
             <h4 class="node-header @ColorStyle"
                 @onmousedown="OnMouseDown"
                 @onmousedown:stopPropagation="true">
+                <div class="nodetooltip">
+                    <img src="Icons/Info.png" class="header-info-icon"/>
+                    <span class="node-tooltiptext" style="width: @(Width)ch; z-index: 1000">
+                        @NodeModel.Description<br/>@NodeModel.Instruction
+                    </span>
+                </div>
                 @Header
                 <i class="delete-node-button" @onclick="OnDeleteClicked">&#10008;</i>
             </h4>
@@ -38,12 +44,13 @@
 
     [Parameter]
     public string ColorStyle { get; set; }
-    
+
     private double lastClientX, lastClientY;
     private double initX, initY;
 
+    private int Width => Math.Min(Math.Max(20, (int) Math.Sqrt(NodeModel.Description.Length) * 4), 80);
+
     private void OnMouseDown(MouseEventArgs e) {
-        
         selectionManager.GrabbedNode = NodeModel;
         selectionManager.InitialX = NodeModel.X;
         selectionManager.InitialY = NodeModel.Y;

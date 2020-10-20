@@ -2,13 +2,40 @@
 
 @using EN2Editor.Pages.NodeComponents
 @using EN2Editor.Model
+@using System.Threading
 
-<TransitionEnd tem="NodeModelBase.TransitionEndModel"/>
-<TransitionStart tsm="NodeModelBase.TransitionStartModel"/>
+<TransitionEnd tem="NodeModel.TransitionEndModel"/>
+<div>Tilfældig udsættelse <input checked=@NodeModel.UseRandomRange type="checkbox" @onchange="CheckboxClicked"/></div>
+@if (NodeModel.UseRandomRange) {
+    <div style="color:red">Fra:</div>
+    <div style="margin-bottom: 3px">Timer: <input style="width:4ch;height: 20px" @bind-value="NodeModel.ToFrom.FromTime.Hour"/> Minutter: <input style="width:4ch;height: 20px" @bind-value="NodeModel.ToFrom.FromTime.Minute"/></div>
+    <div style="color:red">Til:</div>
+    <div style="margin-bottom: 3px">Timer: <input style="width:4ch;height: 20px" @bind-value="NodeModel.ToFrom.ToTime.Hour"/> Minutter: <input style="width:4ch;height: 20px" @bind-value="NodeModel.ToFrom.ToTime.Minute"/></div>
+} else {
+    <div style="margin-bottom: 3px">Timer: <input style="width:4ch;height: 20px" @bind-value="NodeModel.Time.Hour"/> Minutter: <input style="width:4ch;height: 20px" @bind-value="NodeModel.Time.Minute"/></div>
+}
+<TransitionStart tsm="NodeModel.TransitionStartModel" @ref="end"/>
 
 @code {
 
     [Parameter]
-    public UdsaetNodeModel NodeModelBase { get; set; }
+    public UdsaetNodeModel NodeModel { get; set; }
+
+    private TransitionStart end;
+
+    
+    
+    private async Task CheckboxClicked(ChangeEventArgs args) {
+        bool c = bool.Parse(args.Value.ToString());
+        NodeModel.UseRandomRange = c;
+        // StateHasChanged();
+        // await end.CalcCoords();
+        await Task.Run(ExecuteNastyHack);
+    }
+
+    private void ExecuteNastyHack() {
+        Thread.Sleep(50);
+        end.CalcCoords();
+    }
 
 }
