@@ -8,7 +8,15 @@ public class UdsaetNodeModel : InternalNodeModelBase {
                                                   "Dette betyder, at dette patient case vil ligge i dvale i et tilfældigt " +
                                                   "interval mellem de to indtastede tider. \"fra\" tiden skal være mindre end \"til\" tiden.";
 
-    
+    public override void Validate() {
+        throw new System.NotImplementedException();
+    }
+
+    public override string Export() {
+        throw new System.NotImplementedException();
+    }
+
+
     public bool UseRandomRange { get; set; }
     public Time Time { get; } = new Time();
     public TimeRange ToFrom { get; } = new TimeRange();

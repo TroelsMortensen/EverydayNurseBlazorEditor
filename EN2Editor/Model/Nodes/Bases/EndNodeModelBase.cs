@@ -7,5 +7,6 @@ public abstract class EndNodeModelBase : NodeModelBase {
     protected EndNodeModelBase() {
         TransitionEndModel = new TransitionEndModel(this);
     }
+
 }
 }

@@ -1,0 +1,42 @@
+@namespace EN2Editor.Pages.Nodes
+
+@using EN2Editor.Pages.NodeComponents
+@using Model.Nodes
+
+<TransitionEnd tem="NodeModel.TransitionEndModel"/>
+<div>
+    <textarea rows="2" cols="45" style=" display: block; margin-left: auto; margin-right: auto; margin-top: 5px" 
+                    @bind="@NodeModel.PatientSays"
+                    @onmousedown:stopPropagation="true"
+                    @onclick:stopPropagation="true">
+    </textarea>
+</div>
+<div>
+    <b class="add-dialog-option" @onclick="OnAddClicked">&#43;</b>
+</div>
+
+@foreach (DialogNodeModel.DialogOption option in NodeModel.Options) {
+    <div>
+        <i class="delete-option-button" @onclick="@(() => OnDeleteClicked(option))">&#10008;</i>
+        <textarea rows="2" cols="40" @bind="@option.DialogText"
+            @onmousedown:stopPropagation="true"
+            @onclick:stopPropagation="true">
+        </textarea>
+    </div>
+}
+
+
+@code {
+
+    [Parameter]
+    public DialogNodeModel NodeModel { get; set; }
+
+    private void OnAddClicked() {
+        NodeModel.Options.Add(new DialogNodeModel.DialogOption(NodeModel));
+    }
+
+    private void OnDeleteClicked(DialogNodeModel.DialogOption option) {
+        NodeModel.Options.Remove(option);
+    }
+
+}

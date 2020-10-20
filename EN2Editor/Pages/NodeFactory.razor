@@ -21,8 +21,20 @@
 
     case NodeModelBase.NodeTypes.Udsaet:
         <NodeBase Header="Udskyd" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
-            <UdsaetNode NodeModel="(UdsaetNodeModel)NodeModelBase"/>
+            <UdsaetNode NodeModel="(UdsaetNodeModel) NodeModelBase"/>
         </NodeBase>
+        break;
+    case NodeModelBase.NodeTypes.KaldSygeplejerske:
+        <NodeBase Header="Kald sygeplejerske" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
+            <StandardInternalNode NodeModel="(KaldSygeplejerskeNodeModel) NodeModelBase"/>
+        </NodeBase>
+        break;
+
+    case NodeModelBase.NodeTypes.Dialog:
+        <NodeBase ExtraStyle="width: 400px" Header="Dialog" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-internal">
+            <DialogNode NodeModel="(DialogNodeModel) NodeModelBase"/>
+        </NodeBase>
+
         break;
 
     // ##############
@@ -31,7 +43,7 @@
 
     case NodeModelBase.NodeTypes.SletVedAfslutning:
         <NodeBase Header="Slet" NodeModel="NodeModelBase" OnDeleteEvent="OnDeleteEvent" ColorStyle="node-type-end">
-            <SletVedAfslutningNode NodeModelBase="(SletVedAfslutningNodeModel)NodeModelBase"/>
+            <SletVedAfslutningNode NodeModelBase="(SletVedAfslutningNodeModel) NodeModelBase"/>
         </NodeBase>
         break;
 }

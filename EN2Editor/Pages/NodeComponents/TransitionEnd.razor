@@ -25,7 +25,7 @@
         selectionManager.DraggedLink = null;
 
         if (linkModel == null) return;
-
+        tem.InComingLink = linkModel;
         Rectangle imgRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", tem.ID);
         Rectangle canvasRect = await jsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
 

@@ -30,7 +30,7 @@
             OffsetToCanvasY = canvasRect.Top,
             TransitionStartModel = tsm
         };
-
+        tsm.OutGoingLink = linkModel;
         nodeModelManager.Links.Add(linkModel);
 
         selectionManager.DraggedLink = linkModel;
@@ -38,11 +38,6 @@
         selectionManager.InitialY = evt.ClientY;
         selectionManager.LastX = evt.ClientX;
         selectionManager.LastY = evt.ClientY;
-    }
-
-    protected override Task OnInitializedAsync() {
-        Console.WriteLine("here1");
-        return base.OnInitializedAsync();
     }
 
     public async Task<Rectangle> CalcCoords() {

@@ -1,0 +1,13 @@
+@using EN2Editor.Pages.NodeComponents
+@using Model.Nodes
+@namespace EN2Editor.Pages.Nodes
+
+<TransitionEnd tem="NodeModel.TransitionEndModel"/>
+<TransitionStart tsm="NodeModel.TransitionStartModel"/>
+
+@code {
+    
+    [Parameter]
+    public InternalNodeModelBase NodeModel { get; set; }
+    
+}

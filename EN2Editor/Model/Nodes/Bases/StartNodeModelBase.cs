@@ -7,5 +7,7 @@ public abstract class StartNodeModelBase : NodeModelBase{
     protected StartNodeModelBase() {
         TransitionStartModel = new TransitionStartModel(this);
     }
+
+
 }
 }

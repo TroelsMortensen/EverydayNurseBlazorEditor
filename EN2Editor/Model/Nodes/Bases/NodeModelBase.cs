@@ -9,6 +9,8 @@ public abstract class NodeModelBase {
         
         // internal
         Udsaet,
+        KaldSygeplejerske,
+        Dialog,
         
         // end
         SletVedAfslutning
@@ -19,11 +21,14 @@ public abstract class NodeModelBase {
     
     public Guid ID { get; } = Guid.NewGuid();
     
-    public NodeTypes NodeType;
+    public NodeTypes NodeType { get; set; }
     
     public double X { get; set; }
     public double Y { get; set; }
 
     public virtual void OnDeleteNode() { }
+
+    public abstract void Validate();
+    public abstract string Export();
 }
 }

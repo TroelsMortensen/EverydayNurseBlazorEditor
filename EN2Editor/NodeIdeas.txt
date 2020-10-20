@@ -10,7 +10,7 @@ Other nodes:
 - Receive phone call
 
 Værktøjs nodes (som player ikke som sådan ser):
-- Call nurse
++ Call nurse
 - Call SOSU
 - Call doctor
 - Dokumentation

@@ -9,5 +9,6 @@ public abstract class InternalNodeModelBase : NodeModelBase {
     
     public TransitionStartModel TransitionStartModel { get; }
     public TransitionEndModel TransitionEndModel { get; }
+
 }
 }

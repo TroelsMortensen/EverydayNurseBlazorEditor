@@ -5,8 +5,10 @@
 @inject SelectionManager selectionManager
 @inject IJSRuntime jsRuntime
 
-<div class="node" style="left: @(NodeModel.X)px; top: @(NodeModel.Y)px" xmlns="http://www.w3.org/1999/html">
-    <div class="default-node">
+<div class="node" style="left: @(NodeModel.X)px; top: @(NodeModel.Y)px" xmlns="http://www.w3.org/1999/html"
+     @onmousedown:stopPropagation="true"
+     @onclick:stopPropagation="true">
+    <div class="default-node" style="@ExtraStyle">
         <div class="node-component-container">
             <!-- This container holds all the components of a specific Node type -->
             <h4 class="node-header @ColorStyle"
@@ -33,6 +35,9 @@
     public EventCallback<NodeModelBase> OnDeleteEvent { get; set; }
 
     [Parameter]
+    public string ExtraStyle { get; set; }
+
+    [Parameter]
     public string Header { get; set; }
 
     [Parameter]
@@ -47,7 +52,9 @@
     private double lastClientX, lastClientY;
     private double initX, initY;
 
-    private int Width => Math.Min(Math.Max(20, (int) Math.Sqrt(NodeModel.Description.Length) * 4), 80);
+    private int Width => Math.Min(Math.Max(20,
+        (int) Math.Sqrt(NodeModel.Description.Length + NodeModel.Instruction.Length) * 2),
+        80);
 
     private void OnMouseDown(MouseEventArgs e) {
         selectionManager.GrabbedNode = NodeModel;

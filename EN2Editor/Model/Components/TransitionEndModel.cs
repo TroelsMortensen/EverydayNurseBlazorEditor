@@ -10,5 +10,12 @@ public class TransitionEndModel : NodeComponent {
     public double OffsetToNodeY { get; set; }
 
     public LinkModel InComingLink { get; set; }
+    public override void Validate() {
+        throw new System.NotImplementedException();
+    }
+
+    public override string Export() {
+        throw new System.NotImplementedException();
+    }
 }
 }

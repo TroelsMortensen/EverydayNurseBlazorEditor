@@ -6,6 +6,8 @@ public class NodeModelFactory {
         return type switch {
             NodeModelBase.NodeTypes.AktivFraStarten => new AktivFraStartenNodeModel {X = x, Y = y, NodeType = type},
             NodeModelBase.NodeTypes.Udsaet => new UdsaetNodeModel {X = x, Y = y, NodeType = type},
+            NodeModelBase.NodeTypes.KaldSygeplejerske => new KaldSygeplejerskeNodeModel{X = x, Y = y, NodeType = type},
+            NodeModelBase.NodeTypes.Dialog => new DialogNodeModel{X = x, Y = y, NodeType = type},
             NodeModelBase.NodeTypes.SletVedAfslutning => new SletVedAfslutningNodeModel {X = x, Y = y, NodeType = type},
             _ => null // TODO create null-represenation?
         };
