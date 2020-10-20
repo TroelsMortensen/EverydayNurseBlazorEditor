@@ -1,7 +1,6 @@
+@using Model.Managers
+@using Model.Nodes
 @namespace EN2Editor.Pages.Nodes
-
-@using EN2Editor.Model
-@using EN2Editor.Model.Selection
 @inject SelectionManager SelectionManager
 
 <g class="link" @onclick="PathClicked" @onclick:stopPropagation="true">

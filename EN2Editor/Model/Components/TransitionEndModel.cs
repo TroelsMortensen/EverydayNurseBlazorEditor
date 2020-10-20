@@ -1,7 +1,6 @@
-using System;
-using EN2Editor.Model;
+using Model.Nodes;
 
-namespace Models.Components {
+namespace Model.Components {
 public class TransitionEndModel : NodeComponent {
     public TransitionEndModel(NodeModelBase udsaetNodeModel) {
         Node = udsaetNodeModel;

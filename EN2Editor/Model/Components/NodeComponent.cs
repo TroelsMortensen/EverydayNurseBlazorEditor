@@ -1,7 +1,7 @@
 using System;
-using EN2Editor.Model;
+using Model.Nodes;
 
-namespace Models.Components {
+namespace Model.Components {
 public abstract class NodeComponent {
     public NodeModelBase Node { get; set; }
     public Guid ID { get; } = Guid.NewGuid();

@@ -1,6 +1,6 @@
 using System;
 
-namespace EN2Editor.Model {
+namespace Model.Nodes {
 public abstract class NodeModelBase {
 
     public enum NodeTypes {

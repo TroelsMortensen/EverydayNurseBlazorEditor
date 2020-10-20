@@ -1,4 +1,6 @@
-namespace EN2Editor.Model.Selection {
+using Model.Nodes;
+
+namespace Model.Managers {
 public class SelectionManager {
     
     public bool IsDraggingToolbarNode;

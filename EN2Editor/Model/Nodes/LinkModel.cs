@@ -1,6 +1,6 @@
-using Models.Components;
+using Model.Components;
 
-namespace EN2Editor.Model {
+namespace Model.Nodes {
 public class LinkModel {
     private int endX;
     private int endY;

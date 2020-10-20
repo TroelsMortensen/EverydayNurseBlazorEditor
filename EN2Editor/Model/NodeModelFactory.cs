@@ -1,4 +1,4 @@
-using EN2Editor.Model;
+using Model.Nodes;
 
 namespace Models {
 public class NodeModelFactory {

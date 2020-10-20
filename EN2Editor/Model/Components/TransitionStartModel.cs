@@ -1,6 +1,6 @@
-using EN2Editor.Model;
+using Model.Nodes;
 
-namespace Models.Components {
+namespace Model.Components {
 public class TransitionStartModel : NodeComponent {
     public TransitionStartModel(NodeModelBase node) {
         Node = node;

@@ -1,11 +1,9 @@
-using EN2Editor.Model;
-using EN2Editor.Model.Selection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Models;
+using Model.Managers;
 
 namespace EN2Editor {
 public class Startup {

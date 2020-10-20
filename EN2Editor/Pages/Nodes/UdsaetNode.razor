@@ -1,8 +1,9 @@
 @namespace EN2Editor.Pages.Nodes
 
 @using EN2Editor.Pages.NodeComponents
-@using EN2Editor.Model
+@using Model.Managers
 @using System.Threading
+@using Model.Nodes
 
 <TransitionEnd tem="NodeModel.TransitionEndModel"/>
 <div>Tilfældig udsættelse <input checked=@NodeModel.UseRandomRange type="checkbox" @onchange="CheckboxClicked"/></div>

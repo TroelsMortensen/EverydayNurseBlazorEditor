@@ -1,6 +1,7 @@
-@using EN2Editor.Model.Selection
-@using EN2Editor.Model
+@using Model.Managers
 @using EN2Editor.Pages.Nodes
+@using Model
+@using Model.Nodes
 @using Models
 
 @inject SelectionManager SelectionManager
@@ -66,17 +67,14 @@
     }
 
     private async Task OnDrop(MouseEventArgs e) {
-        Console.WriteLine("Dropped");
         if (SelectionManager.IsDraggingToolbarNode) {
             Console.WriteLine($"Creating {SelectionManager.NodeTypeInCreation}");
             Rectangle rect = await JsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
-
             
             double x = e.ClientX - (int) rect.Left - 100 - DiagramManager.PanX;
             double y = e.ClientY - (int) rect.Top - 20 - DiagramManager.PanY;
             NodeModelBase newNode = NodeModelFactory.CreateNode(SelectionManager.NodeTypeInCreation, x, y);
             NodeModelManager.Nodes.Add(newNode);
-            Console.WriteLine($"Created node {newNode.NodeType}, id: {newNode.ID}");
             SelectionManager.IsDraggingToolbarNode = false;
             StateHasChanged();
         }
