@@ -8,36 +8,37 @@
 @inject NodeModelManager NodeModelManager
 @inject IJSRuntime JsRuntime
 @inject DiagramManager DiagramManager
+<CascadingValue Value="this">
+    <div class="diagram-container">
+        <div id="CanvasID" class="diagram-canvas"
+             tabindex="-1"
+             @onmousemove="OnMouseMove"
+             @onmouseup="OnMouseUp"
+             @onmousedown="OnMouseDownCanvas"
+             ondragover="event.preventDefault()"
+             @ondrop="OnDrop"
+             @onkeydown="OnKeyDown">
 
-<div class="diagram-container">
-    <div id="CanvasID" class="diagram-canvas"
-         tabindex="-1"
-         @onmousemove="OnMouseMove"
-         @onmouseup="OnMouseUp"
-         @onmousedown="OnMouseDownCanvas"
-         ondragover="event.preventDefault()"
-         @ondrop="OnDrop"
-         @onkeydown="OnKeyDown">
-        
-        @if (DiagramManager.PanX != 0 || DiagramManager.PanY != 0) {
-            <div class="unselectable"><button @onclick="ResetPan" style="background:black; color:white">Nulstil</button>Pan, x: @DiagramManager.PanX y: @DiagramManager.PanY</div>
-        }
-        
-        <svg class="diagram-svg-layer" style="z-index: 10; 
+            @if (DiagramManager.PanX != 0 || DiagramManager.PanY != 0) {
+                <div class="unselectable"><button @onclick="ResetPan" style="background:black; color:white">Nulstil</button>Pan, x: @DiagramManager.PanX y: @DiagramManager.PanY</div>
+            }
+
+            <svg class="diagram-svg-layer" style="z-index: 10; 
         transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
-            @foreach (LinkModel link in NodeModelManager.Links) {
-                <Link LinkModel="@link"/>
-            }
-        </svg>
-        <div class="diagram-html-layer" style="transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
-            @foreach (NodeModelBase node in NodeModelManager.Nodes) {
-                <NodeFactory NodeModelBase="@node" OnDeleteEvent="OnDeleteNode"/>
-            }
+                @foreach (LinkModel link in NodeModelManager.Links) {
+                    <Link LinkModel="@link"/>
+                }
+            </svg>
+            <div class="diagram-html-layer" style="transform: translate(@(PanX)px, @(PanY)px) scale(@Zoom);">
+                @foreach (NodeModelBase node in NodeModelManager.Nodes) {
+                    <NodeFactory NodeModelBase="@node" OnDeleteEvent="OnDeleteNode"/>
+                }
+            </div>
+
         </div>
 
     </div>
-
-</div>
+</CascadingValue>
 
 @code {
     public string PanX => DiagramManager.PanX.ToString();
@@ -66,11 +67,16 @@
         StateHasChanged();
     }
 
+    public void UpdateCanvas() {
+        StateHasChanged();
+        Console.WriteLine("Update");
+    }
+
     private async Task OnDrop(MouseEventArgs e) {
         if (SelectionManager.IsDraggingToolbarNode) {
             Console.WriteLine($"Creating {SelectionManager.NodeTypeInCreation}");
             Rectangle rect = await JsRuntime.InvokeAsync<Rectangle>("helpers.getBoundingClientRectangle", "CanvasID");
-            
+
             double x = e.ClientX - (int) rect.Left - 100 - DiagramManager.PanX;
             double y = e.ClientY - (int) rect.Top - 20 - DiagramManager.PanY;
             NodeModelBase newNode = NodeModelFactory.CreateNode(SelectionManager.NodeTypeInCreation, x, y);
@@ -98,7 +104,7 @@
             double deltaY = (e.ClientY - dragStartY);
             DiagramManager.PanX = (int) deltaX;
             DiagramManager.PanY = (int) deltaY;
-        }
+        } 
     }
 
     private void OnMouseUp(MouseEventArgs e) {
@@ -115,9 +121,7 @@
             LinkModel link = SelectionManager.SelectedLink;
             if (link != null) {
                 NodeModelManager.Links.Remove(link);
-                NodeModelManager.Nodes.ForEach(n => {
-                    n.OnDeleteNode();
-                });
+                NodeModelManager.Nodes.ForEach(n => { n.OnDeleteNode(); });
             }
         }
     }

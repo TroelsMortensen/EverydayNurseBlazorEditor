@@ -288,7 +288,7 @@ NODE
     margin-left: 5px;
     margin-right: 5px;
     color: red;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .add-dialog-option {
@@ -298,6 +298,12 @@ NODE
     color: #00ff00;
     font-size: 30px;  
     font-weight: 900;
+}
+
+.dialog-option {
+    border: 2px solid #606060;
+    border-radius: 10px;
+    margin-top:5px;
 }
 
 .node-tooltiptext {
@@ -329,7 +335,7 @@ NODE
     height: 20px;
     float: left;
     margin-top: 2px;
-    margin-right: 2px;
+    margin-left: 2px;
     cursor: help;
 }
 
@@ -374,6 +380,7 @@ Tool bar
     text-align: center;
     font-weight: bold;
     margin-top: 20px;
+    border: 2px solid #ffffff;
 }
 
 .node-type-start {

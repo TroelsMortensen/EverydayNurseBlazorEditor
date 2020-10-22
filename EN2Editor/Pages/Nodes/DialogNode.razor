@@ -4,27 +4,41 @@
 @using Model.Nodes
 
 <TransitionEnd tem="NodeModel.TransitionEndModel"/>
+<div>Dialog tekst:</div>
 <div>
-    <textarea rows="2" cols="45" style=" display: block; margin-left: auto; margin-right: auto; margin-top: 5px" 
+    <textarea rows="2" cols="32" style=" display: block; margin-left: auto; margin-right: auto; margin-top: 5px" 
                     @bind="@NodeModel.PatientSays"
                     @onmousedown:stopPropagation="true"
                     @onclick:stopPropagation="true">
     </textarea>
 </div>
-<div>
-    <b class="add-dialog-option" @onclick="OnAddClicked">&#43;</b>
-</div>
+
 
 @foreach (DialogNodeModel.DialogOption option in NodeModel.Options) {
-    <div>
-        <i class="delete-option-button" @onclick="@(() => OnDeleteClicked(option))">&#10008;</i>
-        <textarea rows="2" cols="40" @bind="@option.DialogText"
-            @onmousedown:stopPropagation="true"
-            @onclick:stopPropagation="true">
-        </textarea>
+    <div class="dialog-option" id="div-@option.ID">
+        <div>
+            <i class="delete-option-button" @onclick="@(() => OnDeleteClicked(option))">&#10008;</i>
+            Minutter at udføre: 
+            <input style="width:4ch;height: 20px" />
+            <img id="@option.ID" src="Icons/TransitionPoint.png" height="16px" 
+                         style="float:right; margin-right: 2px; cursor:pointer; margin-top: 2px"
+                         @onmousedown="@(() => OnMouseDown(option))"
+                         @onmousedown:stopPropagation="true"
+                         draggable="false"/>
+            </div>
+        <div>
+            <textarea rows="2" cols="32" @bind="@option.DialogText"
+                style="margin-top:3px;margin-bottom:3px; display: block; margin-left: auto; margin-right: auto;"
+                @onmousedown:stopPropagation="true"
+                @onclick:stopPropagation="true">
+            </textarea>
+        </div>
     </div>
 }
 
+<div>
+    <b class="add-dialog-option" @onclick="OnAddClicked">&#43;</b>
+</div>
 
 @code {
 
@@ -37,6 +51,11 @@
 
     private void OnDeleteClicked(DialogNodeModel.DialogOption option) {
         NodeModel.Options.Remove(option);
+    }
+
+
+    private void OnMouseDown(DialogNodeModel.DialogOption option) {
+        Console.WriteLine("Transition start");
     }
 
 }

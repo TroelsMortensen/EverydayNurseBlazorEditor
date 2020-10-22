@@ -24,19 +24,21 @@
 
     private TransitionStart end;
 
-    
-    
+    protected override Task OnAfterRenderAsync(bool firstRender) {
+        Console.WriteLine("here");
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
     private async Task CheckboxClicked(ChangeEventArgs args) {
         bool c = bool.Parse(args.Value.ToString());
         NodeModel.UseRandomRange = c;
-        // StateHasChanged();
-        // await end.CalcCoords();
+
         await Task.Run(ExecuteNastyHack);
     }
 
-    private void ExecuteNastyHack() {
+    private async Task ExecuteNastyHack() {
         Thread.Sleep(50);
-        end.CalcCoords();
+        await end.CalcCoords();
     }
 
 }

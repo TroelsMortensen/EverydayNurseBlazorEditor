@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\trmo\Rider Projects\EverydayNurseBlazorEditor" t="IncludeFlat">
+      <e p="EN2Editor" t="IncludeRecursive">
+        <e p="_Imports.razor" t="Include" />
+        <e p="App.razor" t="Include" />
+        <e p="appsettings.Development.json" t="Include" />
+        <e p="appsettings.json" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Blazor-reading-resources.txt" t="Include" />
+        <e p="Data" t="Include" />
+        <e p="EN2Editor.csproj" t="IncludeRecursive" />
+        <e p="Model" t="Include">
+          <e p="Components" t="Include">
+            <e p="NodeComponent.cs" t="Include" />
+            <e p="TransitionEndModel.cs" t="Include" />
+            <e p="TransitionStartModel.cs" t="Include" />
+          </e>
+          <e p="Managers" t="Include">
+            <e p="DiagramManager.cs" t="Include" />
+            <e p="NodeModelManager.cs" t="Include" />
+            <e p="SelectionManager.cs" t="Include" />
+          </e>
+          <e p="NodeModelFactory.cs" t="Include" />
+          <e p="Nodes" t="Include">
+            <e p="AktivFraStartenNodeModel.cs" t="Include" />
+            <e p="Bases" t="Include">
+              <e p="EndNodeModelBase.cs" t="Include" />
+              <e p="InternalNodeModelBase.cs" t="Include" />
+              <e p="NodeModelBase.cs" t="Include" />
+              <e p="StartNodeModelBase.cs" t="Include" />
+            </e>
+            <e p="DialogNodeModel.cs" t="Include" />
+            <e p="KaldSygeplejerskeNodeModel.cs" t="Include" />
+            <e p="LinkModel.cs" t="Include" />
+            <e p="SletVedAfslutningNodeModel.cs" t="Include" />
+            <e p="UdsaetNodeModel.cs" t="Include" />
+          </e>
+          <e p="Rectangle.cs" t="Include" />
+          <e p="Time.cs" t="Include" />
+          <e p="TimeRange.cs" t="Include" />
+        </e>
+        <e p="NodeIdeas.txt" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="netcoreapp3.1" t="Include">
+              <e p="EN2Editor.AssemblyInfo.cs" t="Include" />
+              <e p="EN2Editor.RazorAssemblyInfo.cs" t="Include" />
+            </e>
+          </e>
+        </e>
+        <e p="Pages" t="Include">
+          <e p="_Host.cshtml" t="Include" />
+          <e p="Canvas.razor" t="Include" />
+          <e p="Error.cshtml" t="Include" />
+          <e p="Index.razor" t="Include" />
+          <e p="NodeComponents" t="Include">
+            <e p="TransitionEnd.razor" t="Include" />
+            <e p="TransitionStart.razor" t="Include" />
+          </e>
+          <e p="NodeFactory.razor" t="Include" />
+          <e p="Nodes" t="Include">
+            <e p="AktivFraStartenNode.razor" t="Include" />
+            <e p="DialogNode.razor" t="Include" />
+            <e p="Link.razor" t="Include" />
+            <e p="NodeBase.razor" t="Include" />
+            <e p="SletVedAfslutningNode.razor" t="Include" />
+            <e p="StandardInternalNode.razor" t="Include" />
+            <e p="UdsaetNode.razor" t="Include" />
+          </e>
+          <e p="Toolbar" t="Include">
+            <e p="EndNodeTools.razor" t="Include" />
+            <e p="InternalNodeTools.razor" t="Include" />
+            <e p="StartNodeTools.razor" t="Include" />
+            <e p="ToolsMenu.razor" t="Include" />
+          </e>
+        </e>
+        <e p="Program.cs" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="launchSettings.json" t="Include" />
+        </e>
+        <e p="Sandbox" t="Include">
+          <e p="index.html" t="Include" />
+          <e p="Sandbox.css" t="Include" />
+        </e>
+        <e p="Shared" t="Include">
+          <e p="MainLayout.razor" t="Include" />
+          <e p="NavMenu.razor" t="Include" />
+          <e p="SurveyPrompt.razor" t="Include" />
+        </e>
+        <e p="Startup.cs" t="Include" />
+        <e p="wwwroot" t="Include">
+          <e p="css" t="Include">
+            <e p="bootstrap" t="Include">
+              <e p="bootstrap.min.css" t="Include" />
+              <e p="bootstrap.min.css.map" t="Include" />
+            </e>
+            <e p="open-iconic" t="Include">
+              <e p="font" t="Include">
+                <e p="css" t="Include">
+                  <e p="open-iconic-bootstrap.min.css" t="Include" />
+                </e>
+                <e p="fonts" t="Include">
+                  <e p="open-iconic.eot" t="Include" />
+                  <e p="open-iconic.otf" t="Include" />
+                  <e p="open-iconic.svg" t="Include" />
+                  <e p="open-iconic.ttf" t="Include" />
+                  <e p="open-iconic.woff" t="Include" />
+                </e>
+              </e>
+              <e p="FONT-LICENSE" t="Include" />
+              <e p="ICON-LICENSE" t="Include" />
+              <e p="README.md" t="Include" />
+            </e>
+            <e p="site.css" t="Include" />
+          </e>
+          <e p="favicon.ico" t="Include" />
+          <e p="Icons" t="Include">
+            <e p="Green curved arrow.png" t="Include" />
+            <e p="Grid.svg" t="Include" />
+            <e p="Info.png" t="Include" />
+            <e p="Plus.png" t="Include" />
+            <e p="TransitionPoint.png" t="Include" />
+            <e p="TransitionPoint.svg" t="Include" />
+          </e>
+          <e p="script.js" t="Include" />
+        </e>
+      </e>
+      <e p="EverydayNurseBlazorEditor.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+    <e p="C:\Users\trmo\AppData\Local\JetBrains\Rider2020.2\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\trmo\AppData\Local\JetBrains\Rider2020.2\resharper-host\Local\Transient\Rider\v202\SolutionCaches\_EverydayNurseBlazorEditor.1681651447.00" t="ExcludeRecursive" />
+    <e p="C:\Users\trmo\AppData\Roaming\JetBrains\Rider2020.2\consoles\db" t="IncludeRecursive" />
+    <e p="C:\Users\trmo\AppData\Roaming\JetBrains\Rider2020.2\extensions" t="IncludeRecursive" />
+    <e p="C:\Users\trmo\AppData\Roaming\JetBrains\Rider2020.2\scratches" t="IncludeRecursive" />
+  </component>
+</project>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using EN2Editor.Pages.NodeComponents;
 using Model.Components;
@@ -26,6 +27,7 @@ public class DialogNodeModel : EndNodeModelBase {
         public float TimeToComplete { get; set; }
         public string DialogText { get; set; }
         public TransitionStartModel tsm { get; set; }
+        public Guid ID = Guid.NewGuid();
     }
 }
 }
